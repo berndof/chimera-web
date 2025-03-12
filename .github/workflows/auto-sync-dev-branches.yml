@@ -31,16 +31,17 @@ jobs:
           else
             SKIP_SYNC=true
           fi
-
+          
           if [[ ${BRANCH_NAME} == "dev" ]]; then
-            TARGETS = '{"include": [{"target": "frontend-dev"}, {"target": "backend-dev"}]}'
+            TARGETS='{"include": [{"target": "frontend-dev"}, {"target": "backend-dev"}]}'
           elif [[ ${BRANCH_NAME} == "frontend-dev" ]]; then
-            TARGETS = '{"include": [{"target": "dev"}, {"target": "backend-dev"}]}'
-          elif [[ ${BRANCH_NAME } == "backend-dev" ]]; then
-            TARGETS = '{"include": [{"target": "dev"}, {"target"; "frontend-dev"}]}'
+            TARGETS='{"include": [{"target": "dev"}, {"target": "backend-dev"}]}'
+          elif [[ ${BRANCH_NAME} == "backend-dev" ]]; then
+            TARGETS='{"include": [{"target": "dev"}, {"target": "frontend-dev"}]}'
           else
-            TARGETS = '{"include": []}'
-          fi          
+            TARGETS='{"include": []}'
+          fi
+
 
           echo "base_branch_name"=${BRANCH_NAME} >> $GITHUB_OUTPUT
           echo "original_commit_message"=${CLEAN_COMMIT_MESSAGE} >> $GITHUB_OUTPUT
