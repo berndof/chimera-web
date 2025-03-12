@@ -24,7 +24,8 @@ jobs:
         run: |
           BRANCH_NAME=${GITHUB_REF#refs/heads/}
           COMMIT_MESSAGE=$(git log -1 --pretty=%B)
-          CLEAN_COMMIT_MESSAGE=${COMMIT_MESSAGE//"[sync-dev]"/""}
+          COMMIT_MESSAGE_CLEAN=${COMMIT_MESSAGE//"[sync-dev]"/""}
+
 
           if [[ ${COMMIT_MESSAGE}  == *"[sync-dev]"* ]]; then
             SKIP_SYNC=false
@@ -52,7 +53,7 @@ jobs:
         run: |
           echo "base_branch_name: ${{ steps.set-outputs.outputs.base_branch_name }}"
           echo "commit_message: ${{ steps.set-outputs.outputs.commit_message }}"
-          echo "skip_syn": ${{ steps.set-outputs.outputs.skip_sync }}"
+          echo "skip_syn: ${{ steps.set-outputs.outputs.skip_sync }}"
           echo "targets: ${{ steps.set-outputs.outputs.targets }}"
   create-pr:
     permissions:
