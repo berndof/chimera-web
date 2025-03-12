@@ -1,0 +1,81 @@
+name: Auto Sync Dev Branches
+
+on:
+  push:
+    branches: [dev, frontend-dev, backend-dev]
+  workflow_dispatch:
+
+jobs:
+  set-targets:
+    runs-on: ubuntu-latest
+    outputs:
+      base_branch_name: ${{ steps.set-outputs.outputs.base_branch_name }}
+      original_commit_message: ${{ steps.set-outputs.outputs.original_commit_message }}
+      skip_sync: ${{ steps.set-outputs.outputs.skip_sync }}
+      targets: ${{ steps.set-outputs.outputs.targets }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+        
+      - name: Define Action Based on Target
+        id: set-outputs
+        run: |
+          BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+          CLEAN_COMMIT_MESSAGE=${COMMIT_MESSAGE//"[sync-dev]"/""}
+
+          if [[ ${COMMIT_MESSAGE}  == *"[sync-dev]"* ]]; then
+            SKIP_SYNC=false
+          else
+            SKIP_SYNC=true
+          fi
+
+          if [[ ${BRANCH_NAME} == "dev" ]]; then
+            TARGETS = '{"include": [{"target": "frontend-dev"}, {"target": "backend-dev"}]}'
+          elif [[ ${BRANCH_NAME} == "frontend-dev" ]]; then
+            TARGETS = '{"include": [{"target": "dev"}, {"target": "backend-dev"}]}'
+          elif [[ ${BRANCH_NAME } == "backend-dev" ]]; then
+            TARGETS = '{"include": [{"target": "dev"}, {"target"; "frontend-dev"}]}'
+          else
+            TARGETS = '{"include": []}'
+          fi          
+
+          echo "base_branch_name"=${BRANCH_NAME} >> $GITHUB_OUTPUT
+          echo "original_commit_message"=${CLEAN_COMMIT_MESSAGE} >> $GITHUB_OUTPUT
+          echo "sync_dev"=${SYNC_DEV} >> $GITHUB_OUTPUT
+          echo "targets"=${TARGETS} >> $GITHUB_OUTPUT
+          
+      - name: DEBUG SET-TARGETS OUTPUT
+        run: |
+          echo "base_branch_name: ${{ steps.set-outputs.outputs.base_branch_name }}"
+          echo "commit_message: ${{ steps.set-outputs.outputs.commit_message }}"
+          echo "skip_syn": ${{ steps.set-outputs.outputs.skip_sync }}"
+          echo "targets: ${{ steps.set-outputs.outputs.targets }}"
+  create-pr:
+    permissions:
+      contents: write
+      pull-requests: write
+    needs: set-targets
+    runs-on: ubuntu-latest
+    if: ${{ needs.set-targets.outputs.skip_sync == 'false' }}
+    strategy:
+      matrix: ${{ fromJson(needs.set-targets.outputs.targets) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ matrix.target }} 
+          base: ${{ needs.set-targets.outputs.base_branch_name }}
+          title: 'Auto-sync: ${{ needs.set-targets.outputs.base_branch_name }} -> ${{ matrix.target }}'
+          body: |
+            This is an auto-generated PR to keep the ${{ needs.set-targets.outputs.base_branch_name }} branch in sync with ${{ matrix.target }}.
+            Last commit message: ${{ needs.set-targets.outputs.original_commit_message }}
+          labels: 'auto-pr'
