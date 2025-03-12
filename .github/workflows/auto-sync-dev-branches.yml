@@ -46,7 +46,7 @@ jobs:
 
           echo "base_branch_name"=${BRANCH_NAME} >> $GITHUB_OUTPUT
           echo "original_commit_message"=${CLEAN_COMMIT_MESSAGE} >> $GITHUB_OUTPUT
-          echo "sync_dev"=${SYNC_DEV} >> $GITHUB_OUTPUT
+          echo "skip_sync"=${SKIP_SYNC} >> $GITHUB_OUTPUT
           echo "targets"=${TARGETS} >> $GITHUB_OUTPUT
           
       - name: DEBUG SET-TARGETS OUTPUT
