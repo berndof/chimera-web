@@ -52,8 +52,8 @@ jobs:
       - name: DEBUG SET-TARGETS OUTPUT
         run: |
           echo "base_branch_name: ${{ steps.set-outputs.outputs.base_branch_name }}"
-          echo "commit_message: ${{ steps.set-outputs.outputs.commit_message }}"
-          echo "skip_syn: ${{ steps.set-outputs.outputs.skip_sync }}"
+          echo "commit_message: ${{ steps.set-outputs.outputs.original_commit_message }}"
+          echo "skip_sync: ${{ steps.set-outputs.outputs.skip_sync }}"
           echo "targets: ${{ steps.set-outputs.outputs.targets }}"
   create-pr:
     permissions:
