@@ -3,6 +3,7 @@ services:
     volumes:
       - .:/backend
       - /backend/.venv  # Protege a venv do container
+
     environment:
       - ENV=development
     develop:
@@ -12,6 +13,7 @@ services:
           target: /backend
           ignore:
             - .venv/
+            - scripts/
         - action: rebuild
           path: ./pyproject.toml
   postgres:

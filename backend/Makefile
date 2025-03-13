@@ -1,4 +1,4 @@
-ENV_FILE := ${PWD}/.env
+
 dev:
 	@echo "Running docker in dev mode"
 	@docker compose up -d --build
@@ -12,10 +12,10 @@ down:
 
 migration:
 	@read -p "nome da migração: " MIGRATION_NAME; 
-	@uv run --env-file ${ENV_FILE} alembic revision --autogenerate -m "${MIGRATION_NAME}"
+	@docker exec backend_api alembic revision --autogenerate -m "${MIGRATION_NAME}"
 
 migrate:
-	@uv run --env-file ${ENV_FILE} alembic upgrade head
+	@docker exec backend_api uv run --env-file .env alembic upgrade head
 
 clean:
 	@docker network remove backend postgres

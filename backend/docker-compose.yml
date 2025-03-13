@@ -9,7 +9,9 @@ services:
     ports:
       - "${API_PORT}:9090"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+      
     networks:
       - backend
 
@@ -40,6 +42,8 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+      - pgadmin:/var/lib/pgadmin
     networks:
       - postgres
     restart: unless-stopped
