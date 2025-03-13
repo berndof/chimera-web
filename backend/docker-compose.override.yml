@@ -4,8 +4,6 @@ services:
       - .:/backend
       - /backend/.venv  # Protege a venv do container
 
-    environment:
-      - ENV=development
     develop:
       watch:
         - action: sync
