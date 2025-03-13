@@ -1,19 +1,17 @@
 services:
   backend:
+
     volumes:
-      - .:/backend
+      - .:/backend:delegated
       - /backend/.venv  # Protege a venv do container
+      - ./alembic/versions:/backend/alembic/versions:rw
 
     develop:
       watch:
         - action: sync
-          path: .
-          target: /backend
-          ignore:
-            - .venv/
-            - scripts/
-        - action: rebuild
-          path: ./pyproject.toml
+          path: ./app/
+          target: /backend/app/
+
   postgres:
     ports:
       - "${POSTGRES_PORT}:5432" 

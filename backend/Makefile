@@ -11,8 +11,7 @@ down:
 	@docker compose down
 
 migration:
-	@read -p "nome da migração: " MIGRATION_NAME; 
-	@docker exec backend_api alembic revision --autogenerate -m "${MIGRATION_NAME}"
+	@bash -c 'read -p "nome da migração: " MIGRATION_NAME; docker exec backend_api alembic revision --autogenerate -m "$$MIGRATION_NAME"'
 
 migrate:
 	@docker exec backend_api uv run --env-file .env alembic upgrade head
