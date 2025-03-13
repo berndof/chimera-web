@@ -1,7 +1,5 @@
 services:
   backend:
-    environment:
-      - ENV=production
     develop:
       watch: []  # Desativar hot reload no ambiente de produção
 
