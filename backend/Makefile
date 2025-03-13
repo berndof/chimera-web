@@ -18,6 +18,7 @@ migrate:
 	@docker exec backend_api uv run --env-file .env alembic upgrade head
 
 clean:
+	@docker compose down
 	@docker network remove backend postgres
 	@docker volume remove postgres pgadmin
 
