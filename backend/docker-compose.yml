@@ -40,9 +40,6 @@ services:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
       PGADMIN_CONFIG_SERVER_MODE: 'False'
-      PGADMIN_PORT: ${PGADMIN_PORT}
-    ports:
-      - "${PGADMIN_PORT}:80"
     networks:
       - postgres
     restart: unless-stopped

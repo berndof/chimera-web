@@ -1,0 +1,23 @@
+services:
+  backend:
+    volumes:
+      - .:/backend
+      - /backend/.venv  # Protege a venv do container
+    environment:
+      - ENV=development
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /backend
+          ignore:
+            - .venv/
+        - action: rebuild
+          path: ./pyproject.toml
+  postgres:
+    ports:
+      - "${POSTGRES_PORT}:5432" 
+  
+  pgadmin:
+    ports:
+      - "${PGADMIN_PORT}:80"

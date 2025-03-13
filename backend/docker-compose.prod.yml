@@ -1,0 +1,12 @@
+services:
+  backend:
+    environment:
+      - ENV=production
+    develop:
+      watch: []  # Desativar hot reload no ambiente de produção
+
+  postgres:
+    ports: []  # Não expõe o DB publicamente
+  
+  pgadmin:
+    ports: []
