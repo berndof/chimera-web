@@ -1,7 +1,8 @@
+export { contentLoader }
+
 import { createIcons, icons } from 'lucide';
-
-
-export function contentLoader() {
+    
+function contentLoader() {
     return {
         content: '',
         isContentLoading: false,

@@ -1,0 +1,19 @@
+services:
+  frontend:
+    container_name: frontend
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      - FRONTEND_PORT: ${FRONTEND_PORT}
+    ports:
+      - "${FRONTEND_PORT}:9000"
+    networks:
+      - frontend
+    # TODO healthcheck
+
+networks:
+  frontend:
+    driver: bridge
+
+
