@@ -1,7 +1,7 @@
 import logging
 import os
 
-from app.user.model import User  # type: ignore # noqa: F401
+from app.user.model import User
 
 if os.getenv("ENV") == "dev" or os.getenv("ENV") == "test":
     logging.basicConfig(

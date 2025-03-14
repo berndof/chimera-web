@@ -1,3 +1,5 @@
+import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -6,8 +8,8 @@ from app.user.model import User
 from app.user.schemas import UserCreate
 
 
-class UserRepository:
-    def __init__(self, database_session: AsyncSession):
+class UserRepository():
+    def __init__(self, database_session: AsyncSession,):
         self.session = database_session
         self.model = User
 
@@ -26,5 +28,10 @@ class UserRepository:
 
     async def get_by_username(self, username: str) -> User | None:
         selection_query = select(self.model).where(self.model.username == username)
+        result = await self.session.execute(selection_query)
+        return result.scalar_one_or_none()
+
+    async def get_by_id(self, user_id: uuid.UUID) -> User | None:
+        selection_query = select(self.model).where(self.model.id == user_id)
         result = await self.session.execute(selection_query)
         return result.scalar_one_or_none()

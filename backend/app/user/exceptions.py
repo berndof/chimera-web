@@ -1,5 +1,6 @@
 from fastapi import HTTPException, status
 
+
 class UserAlreadyExists(HTTPException):
     def __init__(self):
         super().__init__(
