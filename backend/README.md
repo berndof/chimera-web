@@ -39,10 +39,12 @@ nano .env
 por padrão o host do postgress é configurado como o nome do serviço no docker-compose, se quiser alterar basta definir no `.env` a váriavel `POSTGRES_HOST="nome_do_host_ou_ip"` o mesmo vale para `POSTGRES_PORT`
 
 
-se quiser rodar a parte do python localmente configure as variaveis acima e suba os serviços separadamente 
+se quiser rodar a parte do python fora do container configure as variaveis acima e suba os serviços separadamente 
 
-docker compose up -d pgadmin
+docker compose up -d pgadmin 
 uv run --env-file .env fastapi run --port 9090 --host 0.0.0.0 --reload
+
+
 
 # Migrações manuais 
 

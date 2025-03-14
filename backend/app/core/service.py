@@ -4,7 +4,8 @@ from typing import Any
 
 import jwt
 
-from app.core.exceptions import InvalidCredentialsException
+from fastapi import HTTPException, status
+
 from app.core.security import get_secret_key, validate_password
 from app.user.model import User
 from app.user.repository import UserRepository
@@ -17,9 +18,13 @@ class AuthService:
     async def authenticate_user(self, username: str, password: str) -> User:
         user = await self.user_repository.get_by_username(username)
         if not user:
-            raise InvalidCredentialsException(detail="User Not Found")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="User does not exists"
+            )
         if not validate_password(password, user.password):
-            raise InvalidCredentialsException(detail="Invalid Password")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid Password"
+            )
         return user
 
     def create_access_token(

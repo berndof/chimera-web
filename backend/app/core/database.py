@@ -7,6 +7,7 @@ from typing import Any
 from sqlalchemy.ext.asyncio import (
     AsyncConnection,
     AsyncSession,
+    AsyncEngine, 
     async_sessionmaker,
     create_async_engine,
 )
@@ -15,6 +16,7 @@ from sqlalchemy.orm import DeclarativeBase
 from app.core.exceptions import DbNotInitializedError
 
 logger = logging.getLogger("DATABASE MANAGER")
+logger.setLevel(logging.DEBUG)
 
 
 class Base(DeclarativeBase):
@@ -26,12 +28,14 @@ class DatabaseManager:
         if engine_kwargs is None:
             engine_kwargs = {}
 
-        self._engine = create_async_engine(host, **engine_kwargs)
-        self._sessionmaker = async_sessionmaker(self._engine, class_=AsyncSession)
+        self._engine:AsyncEngine | None = create_async_engine(host, **engine_kwargs)
+        self._sessionmaker: async_sessionmaker[AsyncSession] | None = (
+            async_sessionmaker(self._engine, class_=AsyncSession)
+        )
 
-    async def close(self):
+    async def close(self) -> None:
         if not self._engine:
-            raise DbNotInitializedError()
+            raise DbNotInitializedError
 
         logger.info("Closing database connection...")
         await self._engine.dispose()
@@ -41,34 +45,32 @@ class DatabaseManager:
     @asynccontextmanager
     async def connect(self) -> AsyncIterator[AsyncConnection]:
         if not self._engine:
-            raise DbNotInitializedError()
+            raise DbNotInitializedError
 
         async with self._engine.begin() as conn:
             try:
                 yield conn
             except Exception as e:
                 logger.error(e)
-                logger.error("Rolling back transaction...")
                 await conn.rollback()
                 raise e
 
     @asynccontextmanager
     async def session(self) -> AsyncIterator[AsyncSession]:
         if not self._sessionmaker:
-            raise DbNotInitializedError()
+            raise DbNotInitializedError
 
         async with self._sessionmaker() as session:
             try:
                 yield session
                 await session.commit()
             except Exception as e:
-                logger.error(e)
-                logger.error("Rolling back transaction...")
+                logger.info("Rolling back transaction...")
                 await session.rollback()
-                raise e
             finally:
                 logger.debug("Closing db session...")
                 await session.close()
+
 
 
 def get_database_url() -> str:
@@ -93,11 +95,6 @@ db_manager = DatabaseManager(
     get_database_url()
 )
 
-async def get_db_session():
+async def get_db_session() -> AsyncIterator[AsyncSession]:
     async with db_manager.session() as session:
         yield session
-
-async def populate_sqlite():
-    # Temporario | create db tables
-    async with db_manager.connect() as connection:
-        await connection.run_sync(Base.metadata.create_all)

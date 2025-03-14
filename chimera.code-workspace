@@ -1,0 +1,28 @@
+{
+  "folders": [
+      {
+        "path": "backend",
+        "settings": {
+          "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+          "terminal.integrated.profiles.linux": {
+            "path": "zsh",
+            "icon": "terminal",
+            "cwd": "${workspaceFolder}/backend",
+            "args": ["-c", "git checkout backend-dev && exec zsh"]
+          },
+        }
+      },
+      {
+        "path": "frontend",
+        "settings": {
+          "python.defaultInterpreterPath": "${workspaceFolder}/frontend/.venv/bin/python",
+          "terminal.integrated.profiles.linux": {
+            "path": "zsh",
+            "icon": "terminal",
+            "cwd": "${workspaceFolder}/frontend",
+            "args": ["-c", "git checkout frontend-dev && exec zsh"]
+          },
+        }
+      }
+    ]
+}

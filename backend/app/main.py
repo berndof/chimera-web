@@ -1,23 +1,23 @@
 import logging
 import os
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import v1_api_router
-from app.core.database import populate_sqlite
 
 logger = logging.getLogger("MAIN")
 logger.setLevel(logging.DEBUG)
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # run something before the app starts
     logger.debug("Starting app...")
 
-    if os.getenv("ENV") == "dev":
-        await populate_sqlite()
+    #automatizar rotina de inicialização
+    #verificar se as migrações do db estão em dia
 
     yield
 
