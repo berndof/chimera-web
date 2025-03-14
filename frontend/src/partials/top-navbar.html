@@ -1,0 +1,110 @@
+<nav class="sticky top-0 z-10 flex flex-row justify-between w-full h-12 p-2 gap-2
+    border-outline bg-surface-alt dark:border-outline-dark dark:bg-surface-dark-alt" aria-label="top navibation bar">
+
+    <!--left section-->
+    <div class="flex flex-row flex-1 items-center justify-start">
+
+
+
+    </div><!--end left section-->
+
+    <!--center section-->
+    <div class="flex flex-row flex-3 justify-center items-center">
+
+        <!--search input-->
+        <div class="relative flex w-full max-w-1/2 flex-col gap-1 text-on-surface dark:text-on-surface-dark">
+
+            <i data-lucide="search" class="transition-transform duration-300 absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-on-surface/50
+                    dark:text-on-surface-dark"></i>
+
+            <input type="search"
+                class="w-full h-6 rounded-lg border border-outline bg-surface-alt py-2 pl-10 pr-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:opacity-75 dark:border-outline-dark dark:bg-surface-dark-alt/50 dark:focus-visible:outline-primary-dark"
+                name="search" placeholder="Search" aria-label="search" />
+        </div>
+
+    </div><!--end center section-->
+
+    <!--right section-->
+    <div class="flex flex-row flex-1 items-center justify-end">
+
+        <!-- Profile Menu  -->
+        <div x-data="{ userDropdownIsOpen: false }" class="relative"
+            x-on:keydown.esc.window="userDropdownIsOpen = false">
+
+            <button type="button"
+                class="flex w-full items-center rounded-radius gap-4 py-1 px-4 
+                text-left text-on-surface  dark:text-on-surface-dark 
+                hover:bg-primary/5  dark:hover:bg-primary-dark/5
+                  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary dark:focus-visible:outline-primary-dark"
+                x-bind:class="userDropdownIsOpen ? 'bg-primary/10 dark:bg-primary-dark/10' :            ''"
+                aria-haspopup="true" x-on:click="userDropdownIsOpen = ! userDropdownIsOpen"
+                x-bind:aria-expanded="userDropdownIsOpen">
+
+                <div class="hidden md:flex flex-row truncate ">
+                    <span class="text-sm overflow-hidden" x-text="$store.auth.user.first_name || 'Usuário'"></span>
+
+                </div>
+
+                <img src="https://avatar.iran.liara.run/public/32" class="size-8 object-cover rounded-radius"
+                    alt="avatar" aria-hidden="true" />
+            </button>
+
+            <!-- menu -->
+            <div x-cloak x-show="userDropdownIsOpen"
+                class="absolute top-13 right-2 z-20 h-fit w-48 border divide-y divide-outline border-outline bg-surface dark:divide-outline-dark dark:border-outline-dark dark:bg-surface-dark rounded-radius"
+                role="menu" x-on:click.outside="userDropdownIsOpen = false"
+                x-on:keydown.down.prevent="$focus.wrap().next()" x-on:keydown.up.prevent="$focus.wrap().previous()"
+                x-transition="" x-trap="userDropdownIsOpen">
+
+                <div class="flex flex-col py-1.5">
+                    <a href="#"
+                        class="flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-on-surface underline-offset-2 hover:bg-primary/5 hover:text-on-surface-strong focus-visible:underline focus:outline-hidden dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong"
+                        role="menuitem">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                            class="size-5 shrink-0" aria-hidden="true">
+                            <path
+                                d="M10 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.465 14.493a1.23 1.23 0 0 0 .41 1.412A9.957 9.957 0 0 0 10 18c2.31 0 4.438-.784 6.131-2.1.43-.333.604-.903.408-1.41a7.002 7.002 0 0 0-13.074.003Z" />
+                        </svg>
+                        <span>Profile</span>
+                    </a>
+                </div>
+
+                <div class="flex flex-col py-1.5">
+                    <a href="#"
+                        class="flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-on-surface underline-offset-2 hover:bg-primary/5 hover:text-on-surface-strong focus-visible:underline focus:outline-hidden dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong"
+                        role="menuitem">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                            class="size-5 shrink-0" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M7.84 1.804A1 1 0 0 1 8.82 1h2.36a1 1 0 0 1 .98.804l.331 1.652a6.993 6.993 0 0 1 1.929 1.115l1.598-.54a1 1 0 0 1 1.186.447l1.18 2.044a1 1 0 0 1-.205 1.251l-1.267 1.113a7.047 7.047 0 0 1 0 2.228l1.267 1.113a1 1 0 0 1 .206 1.25l-1.18 2.045a1 1 0 0 1-1.187.447l-1.598-.54a6.993 6.993 0 0 1-1.929 1.115l-.33 1.652a1 1 0 0 1-.98.804H8.82a1 1 0 0 1-.98-.804l-.331-1.652a6.993 6.993 0 0 1-1.929-1.115l-1.598.54a1 1 0 0 1-1.186-.447l-1.18-2.044a1 1 0 0 1 .205-1.251l1.267-1.114a7.05 7.05 0 0 1 0-2.227L1.821 7.773a1 1 0 0 1-.206-1.25l1.18-2.045a1 1 0 0 1 1.187-.447l1.598.54A6.992 6.992 0 0 1 7.51 3.456l.33-1.652ZM10 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-on-surface underline-offset-2 hover:bg-primary/5 hover:text-on-surface-strong focus-visible:underline focus:outline-hidden dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong"
+                        role="menuitem">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                            class="size-5 shrink-0" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M2.5 4A1.5 1.5 0 0 0 1 5.5V6h18v-.5A1.5 1.5 0 0 0 17.5 4h-15ZM19 8.5H1v6A1.5 1.5 0 0 0 2.5 16h15a1.5 1.5 0 0 0 1.5-1.5v-6ZM3 13.25a.75.75 0 0 1 .75-.75h1.5a.75.75 0 0 1 0 1.5h-1.5a.75.75 0 0 1-.75-.75Zm4.75-.75a.75.75 0 0 0 0 1.5h3.5a.75.75 0 0 0 0-1.5h-3.5Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        <span>Payments</span>
+                    </a>
+                </div>
+
+                <!--sign out btn-->
+                <div class="flex flex-col py-1.5">
+                    <a href="#"
+                        class="flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-on-surface underline-offset-2 hover:bg-primary/5 hover:text-on-surface-strong focus-visible:underline focus:outline-hidden dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong"
+                        role="menuitem" @click.prevent="$store.auth.logout()">
+                        <i data-lucide="log-out"></i>
+                        <span>Sign Out</span>
+                    </a>
+                </div><!--end sign out btn-->
+
+            </div>
+        </div>
+    </div><!--end right section-->
+</nav>

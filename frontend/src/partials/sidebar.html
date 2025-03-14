@@ -1,0 +1,92 @@
+<aside class="z-30 shrink-0 flex-col
+        border-outline bg-surface-alt dark:border-outline-dark dark:bg-surface-dark-alt text-on-surface dark:text-on-surface-dark 
+        transition-all duration-300 overflow-hidden ease-in-out
+        hidden md:flex md:relative min-h-screen"
+    :class="{ 'w-60': $store.ui.isSidebarOpen, 'w-16': !$store.ui.isSidebarOpen }" aria-label="Sidebar Navigation">
+
+    <nav class="h-full">
+
+        <!-- Sidebar Container -->
+        <div class="flex flex-col flex-1 h-full gap-2 overflow-x-hidden p-2">
+
+            <!-- Toggle Sidebar -->
+            <button class=" flex items-center rounded-radius gap-2 px-2 py-1.5
+            text-md font-medium text-on-surface dark:text-on-surface-dark
+            hover:bg-primary/5 hover:text-on-surface-strong dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong justify-center
+            transition-all ease-in-out duration-150 h-12 w-12 w-max-12 " @click.prevent="$store.ui.toggleSidebar()"
+                aria-label=" Toggle Sidebar">
+
+                <!-- Ícone -->
+                <i data-lucide="panel-right-open" class="shrink-0 size-6 transition-all duration-300 ease-in-out "
+                    :class="{ '-scale-x-100 ': $store.ui.isSidebarOpen, '-scale-x-100 ': !$store.ui.isSidebarOpen }"></i>
+            </button>
+
+
+
+            <!-- Item da sidebar -->
+            <button class=" flex flex-row items-center rounded-radius gap-2 p-2 text-md font-medium
+                      text-on-surface hover:bg-primary/5 hover:text-on-surface-strong
+                      dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong
+                      transition-all transform ease-in-out duration-300"
+                :class="{
+                    'h-10': $store.ui.isSidebarOpen,
+                    'h-12': !$store.ui.isSidebarOpen,
+                    'dark:bg-primary-dark/5 dark:text-on-surface-dark-strong': $store.ui.sidebarActiveItem === 'home', }"
+                @click.prevent="() => { $store.ui.setSidebarActiveItem('home'); $store.ui.loadContent('/chunks/home')}">
+                <!-- Ícone -->
+                <i data-lucide="home" class="shrink-0 transition-all duration-300 ease-in-out"
+                    :class="{'size-6 translate-x-1/5' : !$store.ui.isSidebarOpen, 'size-5': $store.ui.isSidebarOpen,}"></i>
+                <!-- Texto com transição de opacidade e largura -->
+                <span x-show="$store .ui.isSidebarOpen"
+                    class="transition-all duration-300 ease-in-out whitespace-nowrap">
+                    Início
+                </span>
+                </a>
+            </button>
+
+
+            <!-- Item da sidebar -->
+            <button class=" flex flex-row items-center rounded-radius gap-2 p-2 text-md font-medium
+                      text-on-surface hover:bg-primary/5 hover:text-on-surface-strong
+                      dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong
+                      transition-all transform ease-in-out duration-300"
+                :class="{
+                    'h-10': $store.ui.isSidebarOpen,
+                    'h-12': !$store.ui.isSidebarOpen,
+                    'dark:bg-primary-dark/5 dark:text-on-surface-dark-strong': $store.ui.sidebarActiveItem === 'users', }"
+                @click.prevent="() => { $store.ui.setSidebarActiveItem('users'); $store.ui.loadContent('/chunks/users')}">
+                <!-- Ícone -->
+                <i data-lucide="user" class="shrink-0 transition-all duration-300 ease-in-out "
+                    :class="{'size-6 translate-x-1/5' : !$store.ui.isSidebarOpen, 'size-5': $store.ui.isSidebarOpen,}"></i>
+                <!-- Texto com transição de opacidade e largura -->
+                <span x-show="$store .ui.isSidebarOpen"
+                    class="transition-all duration-300 ease-in-out whitespace-nowrap">
+                    Usuários
+                </span>
+                </a>
+            </button>
+
+            <!-- Item da sidebar -->
+            <button class=" flex flex-row items-center rounded-radius gap-2 p-2 text-md font-medium
+                        text-on-surface hover:bg-primary/5 hover:text-on-surface-strong
+                        dark:text-on-surface-dark dark:hover:bg-primary-dark/5 dark:hover:text-on-surface-dark-strong
+                        transition-all transform ease-in-out duration-300"
+                :class="{
+                      'h-10': $store.ui.isSidebarOpen,
+                      'h-12': !$store.ui.isSidebarOpen,
+                      'dark:bg-primary-dark/5 dark:text-on-surface-dark-strong': $store.ui.sidebarActiveItem === 'x', }"
+                @click.prevent="() => { $store.ui.setSidebarActiveItem('x'); $store.ui.loadContent('/chunks/x')}">
+                <!-- Ícone -->
+                <i data-lucide="x" class="shrink-0 transition-all duration-300 ease-in-out"
+                    :class="{'size-6 translate-x-1/5' : !$store.ui.isSidebarOpen, 'size-5': $store.ui.isSidebarOpen,}"></i>
+                <!-- Texto com transição de opacidade e largura -->
+                <span x-show="$store .ui.isSidebarOpen"
+                    class="transition-all duration-300 ease-in-out whitespace-nowrap">
+                    Test Load
+                </span>
+                </a>
+            </button>
+
+        </div>
+    </nav>
+</aside>

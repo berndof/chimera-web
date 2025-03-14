@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="{% block lang %}pt-BR{% endblock lang %}">
+
+<head>
+    {% block meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% endblock meta %}
+    <title>{% block title %}{% endblock title %}</title>
+
+    <script defer src="static/js/app.js"></script>
+    <link rel="stylesheet" href="static/css/app.css">
+
+    {% block head %}{% endblock head %}
+
+</head>
+
+<body>
+    {% block body %}
+    {% endblock body %}
+</body>
+
+</html>

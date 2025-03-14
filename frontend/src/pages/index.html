@@ -1,0 +1,125 @@
+{% extends "templates/base.html" %}
+
+{% block body %}
+<div x-cloak x-init="$store.auth.checkAuth()" x-show="$store.auth.user" !=''"
+    class=" relative flex w-full flex-col md:flex-row min-h-screen">
+
+
+    {% include "partials/sidebar.html" %}
+
+    <!-- Content Area -->
+    <div
+        class="flex flex-1 flex-col w-full bg-surface dark:bg-surface-dark-alt transition-all duration-300 max-h-screen ">
+        <!-- Top Navbar -->
+        {% include "partials/top-navbar.html" %}
+
+        <!--Main content -->
+        <div
+            class=" flex flex-col h-full flex-1 p-4 rounded-radius border shadow-lg overflow-auto
+            dark:border-outline-dark border-outline bg-surface dark:bg-surface-dark mr-2 mb-2 relative transition-all duration-150 ml-2 md:ml-0 space-y-2">
+
+            <!-- Spinner de Loading (centralizado, com transição de opacidade e scale) -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" aria-hidden="true"
+                x-show="$store.ui.isContentLoading" x-transition:enter-start="opacity-0 scale-0"
+                x-transition:enter-end="opacity-100 scale-100" x-transition:leave-start="opacity-100 scale-100"
+                x-transition:leave-end="opacity-0 scale-0"
+                class="fill-on-surface motion-safe:animate-spin dark:fill-on-surface-dark absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transition-all ease-in-out duration-150 size-16">
+                <path d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
+                <path
+                    d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z" />
+            </svg>
+
+
+            <!-- Header -->
+            <div class=" h-4 flex flex-row p-0 justify-between">
+
+                <!-- Breadcrumb -->
+                <div class="justify-start flex h-full items-center">
+                    <nav class="text-sm text-on-surface dark:text-on-surface-dark" aria-label="breadcrumb">
+                        <ol class="flex flex-wrap items-center gap-1">
+
+
+                            <template x-for="(crumb, index) in $store.ui.currentBreadcrumb" :key="index">
+                                <li class="flex items-center gap-1.5">
+
+                                    <template x-if="crumb === 'home'">
+                                        <button aira-label="home" @click.prevent="$store.ui.loadContent('/chunks/home')"
+                                            class="hover:text-on-surface-strong dark:hover:text-on-surface-dark-strong">
+                                            <i data-lucide="home" class="size-5"></i>
+                                        </button>
+                                    </template>
+
+                                    <template x-if="crumb !== 'home'">
+                                        <span x-text="crumb"></span>
+                                    </template>
+
+                                    <i data-lucide="chevron-right" class="size-5"></i>
+
+                                </li>
+                                <li class="flex items-center gap-1 font-bold">
+                                    <a href="#"
+                                        class="text-on-surface-strong dark:text-on-surface-dark-strong">Usuários</a>
+                                </li>
+                        </ol>
+                    </nav>
+                </div><!-- End Breadcrumb -->
+
+                <!-- Tabs -->
+                <div class="justify-end flex m-0 flex-row items-center ">
+
+                    <div x-data="{ selectedTab: 'list-user' }" class="w-full">
+
+                        <div x-on:keydown.right.prevent="$focus.wrap().next()"
+                            x-on:keydown.left.prevent="$focus.wrap().previous()"
+                            class="flex flex-row gap-2 overflow-x-auto border-b border-outline dark:border-outline-dark items-start"
+                            role="tablist" aria-label="tab options">
+
+                            <!-- Tab Item-->
+                            <button x-on:click="selectedTab = 'list-user'"
+                                x-bind:aria-selected="selectedTab === 'list-user'"
+                                x-bind:tabindex="selectedTab === 'list-user' ? '0' : '-1'"
+                                x-bind:class="selectedTab === 'list-user' ? 'font-bold text-primary border-b-2 border-primary dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
+                                class="flex h-min items-center gap-2 px-4 py-2 text-sm" type="button" role="tab"
+                                aria-controls="tabpannel-userlist">
+
+
+                                Lista
+
+                            </button>
+
+
+                            <!-- Tab Item-->
+                            <button x-on:click="selectedTab = 'create-user'"
+                                x-bind:aria-selected="selectedTab === 'create-user'"
+                                x-bind:tabindex="selectedTab === 'create-user' ? '0' : '-1'"
+                                x-bind:class="selectedTab === 'create-user' ? 'font-bold text-primary border-b-2 border-primary dark:border-primary-dark dark:text-primary-dark' : 'text-on-surface font-medium dark:text-on-surface-dark dark:hover:border-b-outline-dark-strong dark:hover:text-on-surface-dark-strong hover:border-b-2 hover:border-b-outline-strong hover:text-on-surface-strong'"
+                                class="flex h-min items-center gap-2 px-4 py-2 text-sm" type="button" role="tab"
+                                aria-controls="tabpannel-usercreate">
+
+
+                                Novo +
+
+                            </button>
+
+
+
+                        </div>
+                    </div>
+                </div> <!-- end Tabs -->
+
+            </div> <!-- end header -->
+
+            <div id="main-content" class=" flex flex-col h-full p-0 overflow-auto space-y-2 " x-html="$store.ui.content"
+                x-show="!$store.ui.isContentLoading" x-init="$store.ui.loadContent('/chunks/home')"
+                :class="{'opacity-100': !$store.ui.isContentLoading, 'opacity-0': $store.ui.isContentLoading}">
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock body %}
