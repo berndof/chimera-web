@@ -8,7 +8,6 @@
             "path": "zsh",
             "icon": "terminal",
             "cwd": "${workspaceFolder}/backend",
-            "args": ["-c", "git checkout backend-dev && exec zsh"]
           },
         }
       },
@@ -20,7 +19,6 @@
             "path": "zsh",
             "icon": "terminal",
             "cwd": "${workspaceFolder}/frontend",
-            "args": ["-c", "git checkout frontend-dev && exec zsh"]
           },
         }
       }
