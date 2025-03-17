@@ -11,6 +11,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+    command: ["/backend/scripts/start_dev.sh"]
       
     networks:
       - backend

@@ -40,6 +40,7 @@ ENV PYTHONPATH=/backend
 # Copia os arquivos processados na etapa de build
 COPY --from=builder /backend /backend
 RUN chmod +x /backend/scripts/start.sh
+RUN chmod +x /backend/scripts/start_dev.sh
 # Sincroniza o projeto para garantir que todas as dependências e módulos estejam atualizados
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
@@ -48,5 +49,4 @@ RUN --mount=type=cache,target=/root/.cache/uv \
 # Exponha a porta na qual a aplicação irá rodar
 EXPOSE 9090
 
-# Comando para iniciar a aplicação FastAPI
-CMD ["/backend/scripts/start.sh"]
+

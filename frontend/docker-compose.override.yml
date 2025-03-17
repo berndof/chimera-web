@@ -1,0 +1,14 @@
+services:
+  frontend:
+    volumes:
+      - .:/frontend:delegated
+      - /frontend/.venv  # Protege a venv do container
+
+    develop:
+      watch:
+        - action: sync
+          path: ./src/
+          target: /frontend/src/
+        - action: sync 
+          path: ./dist/
+          target: /frontned/dist/
