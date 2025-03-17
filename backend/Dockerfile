@@ -44,6 +44,7 @@ RUN chmod +x /backend/scripts/start.sh
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
+
 # Exponha a porta na qual a aplicação irá rodar
 EXPOSE 9090
 

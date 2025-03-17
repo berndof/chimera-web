@@ -8,7 +8,8 @@
     "build:js": "esbuild ./src/static/js/main.js --bundle --minify --outfile=./dist/js/app.js",
     "build": "npm run build:css && npm run build:js",
     "build:dev": "concurrently \"npm run build:css -- --watch\" \"npm run build:js -- --watch \"",
-    "dev": "concurrently \"npm run build:dev\" \"uv run fastapi run --reload --port 9000\""
+    "dev": "concurrently \"npm run build:dev\" \"uv run fastapi run --reload --port 9000\"",
+    "up": "npm run build && uv run --env-file .env --port 9000 --host 0.0.0.0"
   },
   "keywords": [],
   "author": "",
