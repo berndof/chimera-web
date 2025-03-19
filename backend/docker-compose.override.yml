@@ -4,6 +4,7 @@ services:
     volumes:
       - .:/backend:delegated
       - /backend/.venv  # Protege a venv do container
+      - /backend/scripts
       - ./alembic/versions:/backend/alembic/versions:rw
 
     develop:

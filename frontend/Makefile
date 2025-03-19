@@ -1,7 +1,7 @@
 
 dev:
 	@echo "Running docker in dev mode"
-	@docker compose up -d --build
+	@docker compose up -d
 
 up:
 	@docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d

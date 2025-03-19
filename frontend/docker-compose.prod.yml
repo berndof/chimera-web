@@ -1,0 +1,5 @@
+services:
+  frontend:
+    develop:
+      watch: []  # Desativar hot reload no ambiente de produção
+    command: ["/backend/scripts/start.sh"]
