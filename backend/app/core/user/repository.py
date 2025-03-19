@@ -4,12 +4,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.core.security import get_password_hash
-from app.user.model import User
-from app.user.schemas import UserCreate
+from app.core.user.model import User
+from app.core.user.schemas import UserCreate
 
 
-class UserRepository():
-    def __init__(self, database_session: AsyncSession,):
+class UserRepository:
+    def __init__(
+        self,
+        database_session: AsyncSession,
+    ):
         self.session = database_session
         self.model = User
 

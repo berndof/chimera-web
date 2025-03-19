@@ -3,12 +3,11 @@ from os import getenv
 from typing import Any
 
 import jwt
-
 from fastapi import HTTPException, status
 
 from app.core.security import get_secret_key, validate_password
-from app.user.model import User
-from app.user.repository import UserRepository
+from app.core.user.model import User
+from app.core.user.repository import UserRepository
 
 
 class AuthService:
@@ -29,7 +28,7 @@ class AuthService:
 
     def create_access_token(
         self, data: dict[str, Any], expires_delta: timedelta | None = None
-    ):
+    ) -> str:
         to_encode = data.copy()
         env_expire_minutes = int(getenv("ACCESS_TOKEN_DURATION_MINUTES", 30))
         expire = datetime.now(UTC) + (expires_delta or timedelta(env_expire_minutes))

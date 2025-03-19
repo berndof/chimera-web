@@ -1,7 +1,7 @@
-from app.user.exceptions import UserAlreadyExists
-from app.user.model import User
-from app.user.repository import UserRepository
-from app.user.schemas import UserCreate
+from app.core.user.exceptions import UserAlreadyExists
+from app.core.user.model import User
+from app.core.user.repository import UserRepository
+from app.core.user.schemas import UserCreate
 
 
 class UserService:
