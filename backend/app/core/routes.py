@@ -1,16 +1,16 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
-from app.core.dependencies import auth_service, current_user
-from app.core.schemas import Token
-from app.core.service import AuthService
+from app.core.dependencies import auth_service, current_user, health_service
+from app.core.schemas import Token, HealthResponse
+from app.core.service import AuthService, HealthService
 from app.core.user.model import User
 from app.core.user.schemas import UserResponse
 
-router = APIRouter(tags=["core"])
+auth_router = APIRouter(tags=["auth"])
 
 
-@router.post("/auth/token", response_model=Token)
+@auth_router.post("/auth/token", response_model=Token)
 async def get_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(auth_service),
@@ -26,6 +26,14 @@ async def get_access_token(
     return Token(access_token=access_token, token_type="bearer")
 
 
-@router.get("/me", response_model=UserResponse)
+@auth_router.get("/me", response_model=UserResponse)
 async def read_users_me(current_user: User = Depends(current_user)):
     return current_user
+
+
+health_router = APIRouter(tags=["health"])
+
+
+@health_router.get("/health", response_model=HealthResponse)
+async def health(health_service: HealthService = Depends(health_service)):
+    return await health_service.check_health()

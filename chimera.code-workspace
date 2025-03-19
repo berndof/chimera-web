@@ -1,26 +1,29 @@
 {
   "folders": [
-      {
-        "path": "backend",
-        "settings": {
-          "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
-          "terminal.integrated.profiles.linux": {
-            "path": "zsh",
-            "icon": "terminal",
-            "cwd": "${workspaceFolder}/backend",
-          },
-        }
-      },
-      {
-        "path": "frontend",
-        "settings": {
-          "python.defaultInterpreterPath": "${workspaceFolder}/frontend/.venv/bin/python",
-          "terminal.integrated.profiles.linux": {
-            "path": "zsh",
-            "icon": "terminal",
-            "cwd": "${workspaceFolder}/frontend",
-          },
-        }
+    {
+      "path": "backend",
+      "settings": {
+        "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+        "terminal.integrated.profiles.linux": {
+          "path": "zsh",
+          "icon": "terminal",
+          "cwd": "${workspaceFolder}/backend",
+        },
       }
-    ]
+    },
+    {
+      "path": "frontend",
+      "settings": {
+        "python.defaultInterpreterPath": "${workspaceFolder}/frontend/.venv/bin/python",
+        "terminal.integrated.profiles.linux": {
+          "path": "zsh",
+          "icon": "terminal",
+          "cwd": "${workspaceFolder}/frontend",
+        },
+      }
+    }
+  ],
+  "settings": {
+    "makefile.configureOnOpen": false
+  }
 }

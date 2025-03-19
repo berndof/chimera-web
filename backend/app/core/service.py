@@ -5,6 +5,7 @@ from typing import Any
 import jwt
 from fastapi import HTTPException, status
 
+from app.core.schemas import HealthResponse
 from app.core.security import get_secret_key, validate_password
 from app.core.user.model import User
 from app.core.user.repository import UserRepository
@@ -35,3 +36,9 @@ class AuthService:
         to_encode.update({"exp": expire})
         secret_key = get_secret_key()
         return jwt.encode(to_encode, secret_key, algorithm="HS256")
+
+
+class HealthService:
+    async def check_health(self):
+        # lógica de checagem TODO
+        return HealthResponse(status="ok", message="Healthy Service")

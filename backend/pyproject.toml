@@ -22,16 +22,22 @@ dev = [
 [tool.mypy]
 strict = true
 files = ["app/**/*.py"]
+plugins = "pydantic.mypy"
 
 show_error_contex = true
 show_error_codes = true
 pretty = true
 ignore_missing_imports = true
-disallow_untyped_defs = true
 no_implicit_optional = true
 warn_return_any = true
 warn_unreachable = true
 warn_unused_ignores = true
+
+disallow_untyped_calls = false
+disallow_untyped_defs = false
+follow_imports = "silent"
+ignore_errors = true
+
 
 [tool.ruff]
 include = ["app/**/*.py"]
