@@ -8,13 +8,13 @@ from app.core.database import Base
 from app.core.mixins import TimeStampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    from app.models import User
+    from app.core.user import User
 
 
 class Role(Base, UUIDMixin, TimeStampMixin):
     __tablename__: str = "role"
 
-    name: Mapped[str] = mapped_column(nullable=False, unique=True)
+    name: Mapped[str] = mapped_column(index=True, nullable=False, unique=True)
     description: Mapped[str] = mapped_column(nullable=True)
 
     users: Mapped[list[User]] = relationship(
@@ -22,3 +22,6 @@ class Role(Base, UUIDMixin, TimeStampMixin):
         secondary="user_roles",
         back_populates="roles",
     )
+
+    def __repr__(self) -> str:
+        return f"<Role(id={self.id}, name='{self.name}', description='{self.description}')>"

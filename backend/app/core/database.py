@@ -1,13 +1,13 @@
 import logging
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator, AsyncIterator
 from contextlib import asynccontextmanager
 from os import getenv
 from typing import Any
 
 from sqlalchemy.ext.asyncio import (
     AsyncConnection,
-    AsyncSession,
     AsyncEngine,
+    AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
@@ -97,6 +97,6 @@ def get_database_url() -> str:
 db_manager = DatabaseManager(get_database_url())
 
 
-async def get_db_session() -> AsyncIterator[AsyncSession]:
+async def get_db_session() -> AsyncGenerator[AsyncSession]:
     async with db_manager.session() as session:
         yield session

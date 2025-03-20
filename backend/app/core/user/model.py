@@ -20,7 +20,7 @@ user_roles = Table(
 )
 
 if TYPE_CHECKING:
-    from app.models import Role
+    from app.core.role import Role
 
 
 class User(Base, UUIDMixin, TimeStampMixin):
@@ -42,3 +42,6 @@ class User(Base, UUIDMixin, TimeStampMixin):
     @property
     def full_name(self) -> str:
         return self.first_name + self.last_name
+
+    def __repr__(self) -> str:
+        return f"<User(id={self.id}, username='{self.username}', fullname='{self.full_name}', email='{self.email}')>"  # noqa: E501

@@ -4,9 +4,8 @@ from fastapi import Depends
 from app.core.schemas import TokenData
 from app.core.security import get_secret_key, oauth2_schema
 from app.core.service import AuthService, HealthService
+from app.core.user import User, UserRepository
 from app.core.user.dependencies import user_repository
-from app.core.user.repository import UserRepository
-from app.models import User
 
 
 async def auth_service(
@@ -25,6 +24,8 @@ async def current_user(
         user_id = payload.get("sub")
         token_data = TokenData(user_id=user_id)
         user = await repository.get_by_id(token_data.user_id)
+        if user is None:
+            raise ValueError
         return user
 
     except Exception as e:

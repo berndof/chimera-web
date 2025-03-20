@@ -4,8 +4,8 @@ from fastapi.security import OAuth2PasswordRequestForm
 from app.core.dependencies import auth_service, current_user, health_service
 from app.core.schemas import HealthResponse, Token
 from app.core.service import AuthService, HealthService
+from app.core.user import User
 from app.core.user.schemas import UserResponse
-from app.models import User
 
 auth_router = APIRouter(tags=["auth"])
 

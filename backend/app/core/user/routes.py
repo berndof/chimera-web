@@ -12,10 +12,9 @@ all: list[str] = ["router"]
 router = APIRouter(prefix="/user", tags=["user"])
 
 
-@router.post("/users/create", response_model=UserResponse)
+@router.post("/create", response_model=UserResponse)
 async def create_user(
     user_in: UserCreate, service: UserService = Depends(user_service)
 ):
-    logger.debug("ROUTE - /users/create called")
     response = await service.create(user_in)
     return response

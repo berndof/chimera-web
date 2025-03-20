@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.core.security import get_password_hash
+from app.core.user.model import User
 from app.core.user.schemas import UserCreate
-from app.models import User
 
 
 class UserRepository:
@@ -18,6 +18,8 @@ class UserRepository:
         self.logger = logging.getLogger("USER_REPOSITORY")
 
     async def create(self, user_in: UserCreate) -> User:
+        self.logger.debug(f"CREATING NEW USER, user_in: {user_in}")
+
         new_user = User(
             username=user_in.username,
             email=user_in.email,

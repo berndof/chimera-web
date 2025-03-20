@@ -1,9 +1,9 @@
 import logging
 
 from app.core.user.exceptions import UserAlreadyExists
+from app.core.user.model import User
 from app.core.user.repository import UserRepository
 from app.core.user.schemas import UserCreate
-from app.models import User
 
 
 class UserService:
@@ -13,8 +13,6 @@ class UserService:
         self.logger.setLevel(logging.DEBUG)
 
     async def create(self, user_in: UserCreate) -> User:
-        self.logger.debug(f"creating user, input data: {user_in}")
-
         user_exists: User | None = await self.repository.get_by_username(
             user_in.username
         )

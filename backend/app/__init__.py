@@ -1,6 +1,5 @@
 import logging
 import os
-from app import models
 
 if os.getenv("ENV") == "dev" or os.getenv("ENV") == "test":
     logging.basicConfig(
