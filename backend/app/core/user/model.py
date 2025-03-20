@@ -1,20 +1,42 @@
-from sqlalchemy.orm import Mapped, mapped_column
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.core.database import Base
 from app.core.mixins import TimeStampMixin, UUIDMixin
 
+user_roles = Table(
+    "user_roles",
+    Base.metadata,
+    Column(
+        "user_id", ForeignKey(column="user.id", ondelete="CASCADE"), primary_key=True
+    ),  # type: ignore
+    Column(
+        "role_id", ForeignKey(column="role.id", ondelete="CASCADE"), primary_key=True
+    ),  # type: ignore
+)
+
+if TYPE_CHECKING:
+    from app.models import Role
+
 
 class User(Base, UUIDMixin, TimeStampMixin):
-    __tablename__ = "user"
+    __tablename__: str = "user"
 
-    username: Mapped[str] = mapped_column(
-        unique=True, nullable=False, index=True
-    )
+    username: Mapped[str] = mapped_column(unique=True, nullable=False, index=True)
     email: Mapped[str] = mapped_column(nullable=True)
     password: Mapped[str] = mapped_column(nullable=False)
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
     detail: Mapped[str] = mapped_column(nullable=True)
+
+    roles: Mapped[list[Role]] = relationship(
+        secondary="user_roles",
+        back_populates="roles",
+    )
 
     @property
     def full_name(self) -> str:

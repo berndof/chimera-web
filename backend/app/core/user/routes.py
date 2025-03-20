@@ -12,4 +12,5 @@ router = APIRouter(prefix="/user", tags=["user"])
 async def create_user(
     user_in: UserCreate, service: UserService = Depends(user_service)
 ):
-    return await service.create(user_in)
+    response = await service.create(user_in)
+    return response

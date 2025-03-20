@@ -1,5 +1,3 @@
-import uuid
-
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -29,12 +27,17 @@ class UserRepository:
         await self.session.refresh(new_user)
         return new_user
 
-    async def get_by_username(self, username: str) -> User | None:
+    async def get_by_username(self, username: str) -> User:
         selection_query = select(self.model).where(self.model.username == username)
         result = await self.session.execute(selection_query)
-        return result.scalar_one_or_none()
+        user = result.scalar_one_or_none()
+        if user is None:
+            raise KeyError("user dosnt exists")
 
-    async def get_by_id(self, user_id: uuid.UUID) -> User | None:
+    async def get_by_id(self, user_id: str) -> User:
         selection_query = select(self.model).where(self.model.id == user_id)
         result = await self.session.execute(selection_query)
-        return result.scalar_one_or_none()
+        user = result.scalar_one_or_none()
+        if user is None:
+            raise ValueError("User dosnt exists")
+        return user
