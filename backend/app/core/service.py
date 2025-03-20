@@ -7,8 +7,8 @@ from fastapi import HTTPException, status
 
 from app.core.schemas import HealthResponse
 from app.core.security import get_secret_key, validate_password
-from app.core.user.model import User
 from app.core.user.repository import UserRepository
+from app.models import User
 
 
 class AuthService:

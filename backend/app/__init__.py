@@ -12,7 +12,7 @@ if os.getenv("ENV") == "dev" or os.getenv("ENV") == "test":
     )
 else:
     logging.basicConfig(
-        level=logging.WARN,  # nível de log padrão
+        level=logging.DEBUG,  # nível de log padrão
         format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",  # formato do log
         handlers=[
             logging.StreamHandler(),  # imprime no console

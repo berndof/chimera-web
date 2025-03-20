@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
 from app.core.dependencies import auth_service, current_user, health_service
-from app.core.schemas import Token, HealthResponse
+from app.core.schemas import HealthResponse, Token
 from app.core.service import AuthService, HealthService
-from app.core.user.model import User
 from app.core.user.schemas import UserResponse
+from app.models import User
 
 auth_router = APIRouter(tags=["auth"])
 
@@ -15,14 +15,16 @@ async def get_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     auth_service: AuthService = Depends(auth_service),
 ):
-    user = await auth_service.authenticate_user(form_data.username, form_data.password)
+    user: User = await auth_service.authenticate_user(
+        form_data.username, form_data.password
+    )
 
     # Changing expire delta
     # access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     # access_token = auth_service.create_access_token(data={"sub": user.username},
     # expires_delta=access_token_expires)
 
-    access_token = auth_service.create_access_token(data={"sub": str(user.id)})
+    access_token: str = auth_service.create_access_token(data={"sub": str(user.id)})
     return Token(access_token=access_token, token_type="bearer")
 
 

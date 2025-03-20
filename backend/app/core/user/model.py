@@ -34,8 +34,9 @@ class User(Base, UUIDMixin, TimeStampMixin):
     detail: Mapped[str] = mapped_column(nullable=True)
 
     roles: Mapped[list[Role]] = relationship(
+        "Role",
         secondary="user_roles",
-        back_populates="roles",
+        back_populates="users",
     )
 
     @property

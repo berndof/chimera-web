@@ -7,7 +7,7 @@ from typing import Any
 from sqlalchemy.ext.asyncio import (
     AsyncConnection,
     AsyncSession,
-    AsyncEngine, 
+    AsyncEngine,
     async_sessionmaker,
     create_async_engine,
 )
@@ -23,12 +23,13 @@ class Base(DeclarativeBase):
     # https://docs.sqlalchemy.org/en/14/orm/extensions/asyncio.html#preventing-implicit-io-when-using-asyncsession
     __mapper_args__ = {"eager_defaults": True}
 
+
 class DatabaseManager:
     def __init__(self, host: str, engine_kwargs: dict[str, Any] | None = None):
         if engine_kwargs is None:
             engine_kwargs = {}
 
-        self._engine:AsyncEngine | None = create_async_engine(host, **engine_kwargs)
+        self._engine: AsyncEngine | None = create_async_engine(host, **engine_kwargs)
         self._sessionmaker: async_sessionmaker[AsyncSession] | None = (
             async_sessionmaker(self._engine, class_=AsyncSession)
         )
@@ -58,24 +59,25 @@ class DatabaseManager:
     @asynccontextmanager
     async def session(self) -> AsyncIterator[AsyncSession]:
         if not self._sessionmaker:
-            raise DbNotInitializedError
+            raise DbNotInitializedError()
 
         async with self._sessionmaker() as session:
+            logger.debug("Opened new DB session")
             try:
                 yield session
                 await session.commit()
+                logger.debug("Transaction committed successfully")
             except Exception as e:
-                logger.info("Rolling back transaction...")
+                logger.error("Error during transaction, rolling back...", exc_info=True)
                 await session.rollback()
+                raise e
             finally:
-                logger.debug("Closing db session...")
+                logger.debug("Closing DB session...")
                 await session.close()
 
 
-
 def get_database_url() -> str:
-
-    db_data:dict[str, str] = {
+    db_data: dict[str, str] = {
         "host": getenv("POSTGRES_HOST", "postgres"),
         "port": getenv("POSTGRES_PORT", "5432"),
         "user": getenv("POSTGRES_USER", ""),
@@ -91,9 +93,9 @@ def get_database_url() -> str:
 
     return f"postgresql+asyncpg://{db_data.get('user')}:{db_data.get('password')}@{db_data.get('host')}:{db_data.get('port')}/{db_data.get('db_name')}"
 
-db_manager = DatabaseManager(
-    get_database_url()
-)
+
+db_manager = DatabaseManager(get_database_url())
+
 
 async def get_db_session() -> AsyncIterator[AsyncSession]:
     async with db_manager.session() as session:

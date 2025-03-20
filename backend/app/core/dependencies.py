@@ -5,8 +5,8 @@ from app.core.schemas import TokenData
 from app.core.security import get_secret_key, oauth2_schema
 from app.core.service import AuthService, HealthService
 from app.core.user.dependencies import user_repository
-from app.core.user.model import User
 from app.core.user.repository import UserRepository
+from app.models import User
 
 
 async def auth_service(
