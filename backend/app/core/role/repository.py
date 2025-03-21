@@ -1,5 +1,7 @@
 import logging
+from collections.abc import Sequence
 
+from sqlalchemy import asc, desc, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
@@ -31,3 +33,45 @@ class RoleRepository:
         role: Role | None = result.scalar_one_or_none()
         self.logger.debug(f"FINDED ROLE {role}")
         return role
+
+    async def get_list(
+        self, page: int, per_page: int, sort_by: str, order: str
+    ) -> Sequence[Role] | None:
+        self.logger.debug(f"GETTING {per_page} ROLES, OF PAGE {page}")
+
+        offset = (page - 1) * per_page
+
+        count_total_query = select(func.count()).select_from(self.model)
+        total_results = await self.session.execute(count_total_query)
+        total = total_results.scalar_one()
+
+        total_pages = (total + per_page - 1) // per_page
+
+        if page > total_pages:
+            return None
+
+        #Ordenamento
+        sort_column = getattr(self.model, sort_by)
+        order_func = asc if order == "asc" else desc
+
+        query = (
+            select(self.model).
+            order_by(order_func(sort_column)).
+            offset(offset).limit(per_page)
+        )
+        result = await self.session.execute(query)
+        items = result.scalars().all()
+
+        final_result = {
+            "total": total,
+            "page": page,
+            "per_page": per_page,
+            "total_pages": total_pages,
+            "items": items
+        }
+
+        self.logger.debug("FINAL RESULT OF LIST QUERY")
+        self.logger.debug(final_result)
+
+        return final_result
+

@@ -1,3 +1,5 @@
+from fastapi import HTTPException, status
+
 
 class DbNotInitializedError(Exception):
     def __init__(self):
@@ -9,3 +11,9 @@ class DbNotInitializedError(Exception):
         return self.message
 
 
+class EmptyPage(HTTPException):
+    def __init__(self):
+        super().__init__(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This page is empty",
+        )

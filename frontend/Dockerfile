@@ -39,6 +39,8 @@ ADD . /frontend
 WORKDIR /frontend
 ENV PYTHONPATH=/frontend
 
+RUN npm install -g npm@11.2.0
+
 RUN npm install
 
 EXPOSE 9000

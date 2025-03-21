@@ -1,7 +1,8 @@
 from fastapi import APIRouter
 
+from app.core.auth import router as auth_router
+from app.core.health import router as health_router
 from app.core.role import router as role_router
-from app.core.routes import auth_router, health_router
 from app.core.user import router as user_router
 
 all = ["v1_api_router"]

@@ -17,8 +17,11 @@ logger.setLevel(logging.DEBUG)
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     # run something before the app starts
     logger.debug("Starting app...")
+    #COLOAR EM UM TRY BLOCK
     await start.create_superuser_role()
     await start.create_superuser_user()
+    await start.add_superuser_to_role()
+
     # automatizar rotina de inicialização
     # verificar se as migrações do db estão em dia
 

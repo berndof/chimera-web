@@ -37,6 +37,7 @@ class User(Base, UUIDMixin, TimeStampMixin):
         "Role",
         secondary="user_roles",
         back_populates="users",
+        lazy="dynamic"
     )
 
     @property
