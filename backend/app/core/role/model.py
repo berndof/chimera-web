@@ -18,9 +18,7 @@ class Role(Base, UUIDMixin, TimeStampMixin):
     description: Mapped[str] = mapped_column(nullable=True)
 
     users: Mapped[list[User]] = relationship(
-        "User",
-        secondary="user_roles",
-        back_populates="roles",
+        "User", secondary="user_roles", back_populates="roles", lazy="selectin"
     )
 
     def __repr__(self) -> str:

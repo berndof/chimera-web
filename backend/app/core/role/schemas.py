@@ -1,6 +1,8 @@
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict
+from app.core.user.schemas import UserResponse
+from datetime import datetime
 
 
 class RoleBase(BaseModel):
@@ -15,3 +17,15 @@ class RoleCreate(RoleBase):
 
 class RoleResponse(RoleBase):
     id: UUID
+
+
+class RoleDetail(RoleBase):
+    id: UUID
+    users: list[UserResponse] = []
+    created_at: datetime
+    updated_at: datetime
+
+
+class RoleUserAdd(BaseModel):
+    role_name: str
+    username: str

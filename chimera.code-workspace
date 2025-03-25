@@ -7,8 +7,8 @@
         "terminal.integrated.profiles.linux": {
           "path": "zsh",
           "icon": "terminal",
-          "cwd": "${workspaceFolder}/backend",
-        },
+          "cwd": "${workspaceFolder}/backend"
+        }
       }
     },
     {
@@ -18,12 +18,25 @@
         "terminal.integrated.profiles.linux": {
           "path": "zsh",
           "icon": "terminal",
-          "cwd": "${workspaceFolder}/frontend",
-        },
+          "cwd": "${workspaceFolder}/frontend"
+        }
+      }
+    },
+    {
+      "path": "nova-estrutura",
+      "settings": {
+        "python.defaultInterpreterPath": "${workspaceFolder}/nova-estrutura/.venv/bin/python",
       }
     }
   ],
   "settings": {
-    "makefile.configureOnOpen": false
+    "makefile.configureOnOpen": false,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.analysis.diagnosticSeverityOverrides": {
+      "reportUnusedImport": "none"
+    },
+    "python.analysis.exclude": [
+      "**/__init__.py"
+    ]
   }
 }

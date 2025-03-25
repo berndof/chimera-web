@@ -7,6 +7,7 @@ from sqlalchemy.future import select
 
 from app.core.role.model import Role
 from app.core.role.schemas import RoleCreate
+from app.core.user.model import User
 
 
 class RoleRepository:
@@ -50,14 +51,15 @@ class RoleRepository:
         if page > total_pages:
             return None
 
-        #Ordenamento
+        # Ordenamento
         sort_column = getattr(self.model, sort_by)
         order_func = asc if order == "asc" else desc
 
         query = (
-            select(self.model).
-            order_by(order_func(sort_column)).
-            offset(offset).limit(per_page)
+            select(self.model)
+            .order_by(order_func(sort_column))
+            .offset(offset)
+            .limit(per_page)
         )
         result = await self.session.execute(query)
         items = result.scalars().all()
@@ -67,7 +69,7 @@ class RoleRepository:
             "page": page,
             "per_page": per_page,
             "total_pages": total_pages,
-            "items": items
+            "items": items,
         }
 
         self.logger.debug("FINAL RESULT OF LIST QUERY")
@@ -75,3 +77,13 @@ class RoleRepository:
 
         return final_result
 
+    async def add_user_to_role(self, role: Role, user: User) -> Role | None:
+        try:
+            role.users.append(user)
+            self.session.add(role)
+            await self.session.flush()
+            await self.session.refresh(role)
+            return role
+        except Exception as e:
+            self.logger.error(e)
+            return None

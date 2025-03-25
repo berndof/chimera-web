@@ -1,6 +1,6 @@
 import logging
 
-from app.core.user.exceptions import UserAlreadyExists
+from app.core.user.exceptions import UserAlreadyExists, UserNotExists
 from app.core.user.model import User
 from app.core.user.repository import UserRepository
 from app.core.user.schemas import UserCreate
@@ -22,5 +22,8 @@ class UserService:
         new_user: User = await self.repository.create(user_in)
         return new_user
 
-    async def get_by_username(self, username: str) -> User | None:
-        return await self.repository.get_by_username(username)
+    async def get_by_username(self, username: str) -> User:
+        user = await self.repository.get_by_username(username)
+        if user is None:
+            raise UserNotExists()
+        return user

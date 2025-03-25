@@ -2,8 +2,8 @@ import logging
 
 from fastapi import APIRouter, Depends
 
-from app.core.user.dependencies import get_current_user, user_service
-from app.core.user.model import User
+from app.core.role.dependencies import require_role
+from app.core.user.dependencies import user_service
 from app.core.user.schemas import UserCreate, UserResponse
 from app.core.user.service import UserService
 
@@ -16,10 +16,8 @@ router = APIRouter(prefix="/user", tags=["user"])
 @router.post("/create", response_model=UserResponse)
 async def create_user(
     user_in: UserCreate,
-    current_user: User = Depends(get_current_user),
-    service: UserService = Depends(user_service)
+    current_role: str = Depends(require_role(["superuser"])),
+    service: UserService = Depends(user_service),
 ):
-    #check permission level
-
-    response = await service.create(user_in)
-    return response
+    if current_role == "superuser":
+        return await service.create(user_in)
