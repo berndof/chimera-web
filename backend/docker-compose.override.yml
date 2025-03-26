@@ -1,22 +1,8 @@
 services:
-  backend:
-
-    volumes:
-      - .:/backend:delegated
-      - /backend/.venv  # Protege a venv do container
-      - /backend/scripts
-      - ./alembic/versions:/backend/alembic/versions:rw
-
-    develop:
-      watch:
-        - action: sync
-          path: ./app/
-          target: /backend/app/
-
-  postgres:
+  test_postgres:
     ports:
       - "${POSTGRES_PORT:-5432}:5432" 
   
-  pgadmin:
+  test_pgadmin:
     ports:
       - "${PGADMIN_PORT}:80"

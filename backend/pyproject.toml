@@ -1,5 +1,5 @@
 [project]
-name = "backend"
+name = "new-backend"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -7,6 +7,7 @@ requires-python = ">=3.13"
 dependencies = [
     "asyncpg>=0.30.0",
     "bcrypt>=4.3.0",
+    "dependency-injector>=4.46.0",
     "fastapi[standard]>=0.115.11",
     "pyjwt[crypto]>=2.10.1",
     "sqlalchemy>=2.0.39",
@@ -110,3 +111,6 @@ line-ending = "auto"
 [tool.ruff.lint.isort]
 #if multiple import * as *, combine in one line
 combine-as-imports = true
+
+[tool.ruff.per-file-ignores]
+"**/__init__.py" = ["F401"]

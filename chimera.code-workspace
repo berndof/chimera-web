@@ -1,17 +1,6 @@
 {
   "folders": [
     {
-      "path": "backend",
-      "settings": {
-        "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
-        "terminal.integrated.profiles.linux": {
-          "path": "zsh",
-          "icon": "terminal",
-          "cwd": "${workspaceFolder}/backend"
-        }
-      }
-    },
-    {
       "path": "frontend",
       "settings": {
         "python.defaultInterpreterPath": "${workspaceFolder}/frontend/.venv/bin/python",
@@ -23,9 +12,16 @@
       }
     },
     {
-      "path": "nova-estrutura",
+      "path": "backend",
       "settings": {
-        "python.defaultInterpreterPath": "${workspaceFolder}/nova-estrutura/.venv/bin/python",
+        "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
+        "python.terminal.activateEnvInCurrentTerminal": true,
+        "python.analysis.diagnosticSeverityOverrides": {
+          "reportUnusedImport": "none"
+        },
+        "python.analysis.exclude": [
+          "**/__init__.py"
+        ]
       }
     }
   ],
@@ -35,8 +31,8 @@
     "python.analysis.diagnosticSeverityOverrides": {
       "reportUnusedImport": "none"
     },
-    "python.analysis.exclude": [
-      "**/__init__.py"
-    ]
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "python.analysis.autoIndent": false,
+    "python.analysis.autoSearchPaths": false
   }
 }

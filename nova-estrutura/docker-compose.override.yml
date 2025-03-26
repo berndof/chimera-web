@@ -1,8 +1,0 @@
-services:
-  test_postgres:
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432" 
-  
-  test_pgadmin:
-    ports:
-      - "${PGADMIN_PORT}:80"

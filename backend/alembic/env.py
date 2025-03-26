@@ -7,6 +7,10 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
+from importlib import import_module
+from app.config import module_list
+
+
 from app.core.database import Base, get_database_url
 
 # this is the Alembic Config object, which provides
@@ -24,7 +28,7 @@ if config.config_file_name is not None:
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 loger = logging.getLogger("alembic")
-loger.info(f"{Base.metadata.tables.keys()} teste")
+loger.info(f"{Base.metadata.tables.keys()}")
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -33,6 +37,7 @@ loger.info(f"{Base.metadata.tables.keys()} teste")
 
 
 config.set_main_option("sqlalchemy.url", get_database_url())
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -46,7 +51,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    #url = config.get_main_option("sqlalchemy.url")
+    # url = config.get_main_option("sqlalchemy.url")
     url = get_database_url()
     context.configure(
         url=url,
