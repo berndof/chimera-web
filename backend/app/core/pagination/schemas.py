@@ -24,7 +24,6 @@ class StringFilterField(BaseModel):
     value: str | None = Field(
         None,
         description="Valor a ser filtrado",
-        examples=["joao", "teste@gmail.com", "admin"],
     )
 
 
@@ -41,5 +40,4 @@ class NumberFilterField(BaseModel):
     value: int | None = Field(
         None,
         description="Valor a ser filtrado",
-        examples=["joao", "teste@gmail.com", "admin"],
     )

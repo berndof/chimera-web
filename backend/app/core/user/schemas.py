@@ -12,7 +12,7 @@ from .models import User
 
 class UserBase(BaseSchema[User]):
     username: Annotated[
-        str, StringConstraints(min_length=3, max_length=30, pattern=r"^\w+$")
+        str, StringConstraints(min_length=3, max_length=30, pattern=r"^[a-z_]+$")
     ] = Field(..., example="john_doe")
 
     email: EmailStr | None = Field(None, example="john.doe@example.com")

@@ -3,10 +3,11 @@ import logging
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from importlib import import_module
-from os import getenv
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from .start import start
 
 logger = logging.getLogger("LIFESPAN")
 
@@ -14,14 +15,15 @@ logger = logging.getLogger("LIFESPAN")
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     logger.debug("Starting app...")
-
-    yield
-
-    logger.debug("Shutting down...")
+    try:
+        await start()
+        yield
+        logger.debug("Shutting down...")
+    except Exception as e:
+        logger.error(e)
 
 
 logger = logging.getLogger("MAIN")
-logger.setLevel(logging.DEBUG)
 
 modules_list = ["app.core"]
 

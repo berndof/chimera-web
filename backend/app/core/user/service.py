@@ -1,4 +1,7 @@
+from fastapi import HTTPException, status
+
 from app.core.types import BaseSchema, BaseService
+from app.database.exceptions import DuplicateEntryError
 
 from .models import User
 from .repository import UserRepository
@@ -7,8 +10,20 @@ from .schemas import UserFilter, UserIn
 
 class UserService(BaseService[User, UserRepository]):
     async def create(self, user_in: UserIn) -> User:
-        # add user to default role
-        return await self.repository.create(user_in)
+        try:
+            new_user = await self.repository.create(user_in)
+            return new_user
+        except DuplicateEntryError as dee:
+            self.logger.debug(f"Usuário duplicado: {dee}")
+            # Levanta uma exceção HTTP 409 (Conflict)
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(dee))
+        except Exception as e:
+            self.logger.error(e)
+            # Para outros erros, você pode levantar uma exceção genérica ou customizada
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Erro interno no servidor. {e}",
+            )
 
     async def get_by_username(self, username: str) -> User:
         return await self.repository.get_by_username(username)
@@ -16,7 +31,8 @@ class UserService(BaseService[User, UserRepository]):
     async def get_by_id(self, id: str) -> User:
         return await self.repository.get_by_id(id)
 
-    async def get_list(
+
+"""     async def get_list(
         self,
         response_schema: BaseSchema[User],
         page: int,
@@ -27,4 +43,4 @@ class UserService(BaseService[User, UserRepository]):
     ):
         return await self.repository.get_list(
             response_schema, page, per_page, sort_by, order, filters
-        )
+        ) """

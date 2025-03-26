@@ -113,3 +113,16 @@ class BaseService(Generic[MODEL, BASE_REPOSITORY]):
     def __init__(self, repository: BaseRepository[MODEL]):
         self.logger = logging.getLogger(f"{MODEL.__name__} Service")
         self.repository = repository
+
+    async def get_list(
+        self,
+        response_schema: BASE_SCHEMA,
+        page: int,
+        per_page: int,
+        sort_by: str,
+        order: str,
+        filters: BaseFilter[BASE_SCHEMA],
+    ):
+        return await self.repository.get_list(
+            response_schema, page, per_page, sort_by, order, filters
+        )

@@ -21,4 +21,7 @@ class User(Base, UUIDMixin, TimeStampMixin):
         return self.first_name + self.last_name
 
     def __repr__(self) -> str:
-        return f"<User(id={self.id}, username='{self.username}', fullname='{self.full_name}', email='{self.email}')>"  # noqa: E501
+        return (
+            f"<User(id={self.id}, username='{self.username}', "
+            f"fullname='{self.full_name}', email='{self.email}')>"
+        )
