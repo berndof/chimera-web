@@ -3,7 +3,7 @@ import logging
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.core.database import get_db_session
+from app.database.dependencies import get_db_session
 
 from .models import User
 from .repository import UserRepository

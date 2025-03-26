@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from sqlalchemy.orm import Mapped, mapped_column
 
-from app.core.database import Base
-from app.core.mixins import TimeStampMixin, UUIDMixin
+from app.database.dependencies import Base
+from app.database.mixins import TimeStampMixin, UUIDMixin
 
 
 class User(Base, UUIDMixin, TimeStampMixin):

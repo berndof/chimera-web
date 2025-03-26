@@ -10,8 +10,6 @@ from alembic import context
 from importlib import import_module
 from app.config import module_list
 
-for module_path in module_list:
-    module = import_module(module_path)
 
 from app.core.database import Base, get_database_url
 

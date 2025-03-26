@@ -3,7 +3,7 @@ from os import getenv
 import bcrypt
 from fastapi.security import OAuth2PasswordBearer
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/token")
+oauth2_schema = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 
 def get_secret_key() -> str:
