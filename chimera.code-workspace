@@ -15,7 +15,6 @@
       "path": "backend",
       "settings": {
         "python.defaultInterpreterPath": "${workspaceFolder}/backend/.venv/bin/python",
-        "python.terminal.activateEnvInCurrentTerminal": true,
         "python.analysis.diagnosticSeverityOverrides": {
           "reportUnusedImport": "none"
         },
