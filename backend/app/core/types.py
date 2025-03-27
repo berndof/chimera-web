@@ -1,9 +1,11 @@
 import logging
-from typing import Generic, TypeVar
+from typing import Any, Generic, TypeVar
 
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import asc, desc, func, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import NoResultFound
+from fastapi import HTTPException, status
 
 from .pagination.dependencies import apply_filters
 
@@ -108,6 +110,26 @@ class BaseRepository(Generic[MODEL]):
             items=items,
         )
 
+    async def get_by(self, field: str, value: Any) -> MODEL | None:
+        if not hasattr(self.model, field):
+            self.logger.error(
+                f"Field '{field}' does not exist in {self.model.__name__}"
+            )
+            raise ValueError(f"Field '{field}' does not exist in {self.model.__name__}")
+
+        query = select(self.model).where(getattr(self.model, field) == value)
+
+        self.logger.debug(f"Executing query: {query}")
+
+        result = await self.db_session.execute(query)
+        try:
+            return result.scalar_one()
+        except NoResultFound as nrf:
+            self.logger.debug(f"No {self.model.__name__} found with {field} = {value}")
+            raise nrf
+        except Exception as e:
+            raise e
+
 
 class BaseService(Generic[MODEL, BASE_REPOSITORY]):
     def __init__(self, repository: BaseRepository[MODEL]):
@@ -126,3 +148,19 @@ class BaseService(Generic[MODEL, BASE_REPOSITORY]):
         return await self.repository.get_list(
             response_schema, page, per_page, sort_by, order, filters
         )
+
+    async def get_by(self, field: str, value: Any) -> MODEL | None:
+        try:
+            item = await self.repository.get_by(field, value)
+            return item
+        except NoResultFound:
+            self.logger.debug(
+                f"No {self.repository.model.__name__} found with {field} = {value}"
+            )
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=f"{self.repository.model.__name__} not found",
+            )
+        except Exception as e:
+            self.logger.error("subindo uma exceção diferente")
+            raise e

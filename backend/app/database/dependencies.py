@@ -70,7 +70,7 @@ class DatabaseManager:
         if not self._sessionmaker:
             raise DbNotInitializedError()
 
-        async with self._sessionmaker() as session:
+        async with self._sessionmaker(expire_on_commit=False) as session:
             logger.debug("Opened new DB session")
             try:
                 yield session
