@@ -1,19 +1,21 @@
 import logging
 import os
 
-from app.core.user import User, UserIn, UserRepository
 from app.database.dependencies import get_db_session
 from app.database.exceptions import DuplicateEntryError
 
 logger = logging.getLogger("START")
 
 
-async def start():
+async def start() -> True:
     superuser = await create_superuser()
-    return superuser
+    superadmin_role = await create_superadmin_role()
+    return
 
 
 async def create_superuser():
+    from app.core.user import User, UserIn, UserRepository
+
     async for session in get_db_session():
         user_repository = UserRepository(session, User)
 
@@ -39,4 +41,26 @@ async def create_superuser():
         return user
 
     except DuplicateEntryError as e:
-        logger.debug(f"Usuário duplicado: {e}")
+        logger.debug(e)
+        pass
+
+
+async def create_superadmin_role():
+    from app.core.role import Role, RoleIn, RoleRepository
+
+    async for session in get_db_session():
+        role_repository = RoleRepository(session, Role)
+
+        role_data: dict[str, str] = {
+            "name": "super_admin",
+            "detail": "default_superadmin_role",
+        }
+    try:
+        role_in = RoleIn(**role_data)
+        role = await role_repository.create(role_in)
+        await session.commit()
+        return role
+
+    except DuplicateEntryError as e:
+        logger.debug(e)
+        pass

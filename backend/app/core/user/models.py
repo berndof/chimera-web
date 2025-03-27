@@ -1,9 +1,25 @@
 from __future__ import annotations
 
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Column, ForeignKey, Table
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.dependencies import Base
 from app.database.mixins import TimeStampMixin, UUIDMixin
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from app.core.role import Role
+
+user_roles = Table(
+    "user_roles",
+    Base.metadata,
+    Column(
+        "user_id", ForeignKey(column="user.id", ondelete="CASCADE"), primary_key=True
+    ),
+    Column(
+        "role_id", ForeignKey(column="role.id", ondelete="CASCADE"), primary_key=True
+    ),
+)
 
 
 class User(Base, UUIDMixin, TimeStampMixin):
@@ -15,6 +31,10 @@ class User(Base, UUIDMixin, TimeStampMixin):
     first_name: Mapped[str] = mapped_column(nullable=False)
     last_name: Mapped[str] = mapped_column(nullable=False)
     detail: Mapped[str] = mapped_column(nullable=True)
+
+    roles: Mapped[list[Role]] = relationship(
+        "Role", secondary="user_roles", back_populates="users", lazy="selectin"
+    )
 
     @property
     def full_name(self) -> str:

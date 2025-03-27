@@ -22,5 +22,5 @@ async def role_repository(  # noqa: F811
 async def role_service(
     repository: RoleRepository = Depends(role_repository),
 ) -> RoleService:
-    logger.debug("USER SERVICE INJECTED")
+    logger.debug("ROLE SERVICE INJECTED")
     return RoleService(repository)

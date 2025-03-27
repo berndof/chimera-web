@@ -1,9 +1,14 @@
 from __future__ import annotations
 
-from sqlalchemy.orm import Mapped, mapped_column
+from typing import TYPE_CHECKING
+
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.dependencies import Base
 from app.database.mixins import TimeStampMixin, UUIDMixin
+
+if TYPE_CHECKING:
+    from app.core.user import User
 
 
 class Role(Base, UUIDMixin, TimeStampMixin):
@@ -11,6 +16,10 @@ class Role(Base, UUIDMixin, TimeStampMixin):
 
     name: Mapped[str] = mapped_column(unique=True, nullable=False, index=True)
     detail: Mapped[str] = mapped_column(nullable=True)
+
+    users: Mapped[list[User]] = relationship(
+        "User", secondary="user_roles", back_populates="roles", lazy="selectin"
+    )
 
     def __repr__(self) -> str:
         return f"<Role(id={self.id}, name='{self.name}', '{self.detail}')>"

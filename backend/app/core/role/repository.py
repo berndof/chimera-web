@@ -1,4 +1,7 @@
+from sqlalchemy.exc import IntegrityError
+
 from app.core.types import BaseRepository
+from app.database.exceptions import DuplicateEntryError
 
 from .models import Role
 from .schemas import RoleIn
@@ -12,6 +15,7 @@ class RoleRepository(BaseRepository[Role]):
 
             await self.save(new_role)
             return new_role
-        except Exception as e:
-            self.logger.error(e)
-            raise e
+        except IntegrityError as ie:
+            if "ix_role_name" in str(ie.orig):
+                raise DuplicateEntryError(Role)
+            raise ie

@@ -1,5 +1,5 @@
 class DuplicateEntryError(Exception):
-    """Exceção para indicar que o registro já existe (violação de unicidade)."""
-
-    def __init__(self, message: str = "Registro duplicado."):
+    def __init__(self, model: type, message: str | None = None) -> None:
+        if message is None:
+            message = f"{model.__name__} already exists, skiping"
         super().__init__(message)

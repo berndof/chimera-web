@@ -25,8 +25,7 @@ class UserRepository(BaseRepository[User]):
             return new_user
         except IntegrityError as ie:
             if "ix_user_username" in str(ie.orig):
-                self.logger.debug("Usuário duplicado detectado.")
-                raise DuplicateEntryError("O nome de usuário já existe.")
+                raise DuplicateEntryError(User)
             raise ie
 
     async def get_by_username(self, username: str) -> User:
