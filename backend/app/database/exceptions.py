@@ -6,8 +6,16 @@ class DuplicateEntryError(Exception):
 
 
 class RelationAlreadyExistsError(Exception):
-    def __init__(self, models: list[type], message: str | None = None) -> None:
+    def __init__(self, models: list[type | object], message: str | None = None) -> None:
+        # Determina se o item é uma classe ou instância e ajusta a mensagem
+        participants = [
+            repr(model) if not isinstance(model, type) else model.__name__
+            for model in models
+        ]
+
         if message is None:
-            participants = [model.__name__ for model in models]
-            message = f"Relation already exists between: {', '.join(participants)}"
+            message = (
+                f"Relation already exists between: {', '.join(participants)}, skipping"
+            )
+
         super().__init__(message)

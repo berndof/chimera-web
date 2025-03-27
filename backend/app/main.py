@@ -9,8 +9,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from .start import start
 
-logger = logging.getLogger("LIFESPAN")
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -20,7 +18,8 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         yield
         logger.debug("Shutting down...")
     except Exception as e:
-        logger.error(e)
+        logger.error(f"ad {e}")
+        # sys.exit(0)
 
 
 logger = logging.getLogger("MAIN")

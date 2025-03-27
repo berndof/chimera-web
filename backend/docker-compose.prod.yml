@@ -1,0 +1,11 @@
+services:
+  backend:
+    develop:
+      watch: []  # Desativar hot reload no ambiente de produção
+    command: ["/backend/scripts/start.sh"]
+
+  postgres:
+    ports: []  # Não expõe o DB publicamente
+  
+  pgadmin:
+    ports: []

@@ -11,7 +11,7 @@ from .schemas import UserIn
 
 class UserRepository(BaseRepository[User]):
     async def create(self, user_in: UserIn) -> User:
-        self.logger.debug(f"Creating user with data: {UserIn}")
+        self.logger.debug(f"Creating user with data: {user_in.model_dump_json()}")
         try:
             new_user = User(
                 username=user_in.username,

@@ -1,11 +1,10 @@
 import logging
 import os
-from typing import TYPE_CHECKING
 
 from app.core.role import Role, RoleIn, RoleRepository
 from app.core.user import User, UserIn, UserRepository
 from app.database.dependencies import get_db_session
-from app.database.exceptions import DuplicateEntryError
+from app.database.exceptions import DuplicateEntryError, RelationAlreadyExistsError
 
 logger = logging.getLogger("START")
 
@@ -50,10 +49,9 @@ async def add_user_to_role(user: User, role: Role):
         try:
             await role_repository.add_user_to_role(user, role)
             await session.commit()
-        except Exception as e:
-            logger.error(f"TRATAR AQUI TAMBEM {e}")
-            raise e
-        return
+        except RelationAlreadyExistsError as rae:
+            logger.debug(rae)
+            pass
 
 
 async def create_superuser() -> User:
@@ -71,7 +69,7 @@ async def create_superuser() -> User:
                 user_repository = UserRepository(session, User)
                 user = await user_repository.get_by("username", user_in.username)
             except Exception as e:
-                logger.error(f"Fugiu do esperado {e}")
+                logger.error(f"Error on superuser creation {e}")
                 raise e
     return user
 
@@ -81,7 +79,7 @@ async def create_superadmin_role() -> Role:
         async for session in get_db_session():
             role_repository = RoleRepository(session, Role)
             role_in = RoleIn(**superadmin_role_data)
-            role = await role_repository.get_by(field="name", value=role_in.name)
+            role = await role_repository.create(role_in)
             await session.commit()
 
     except DuplicateEntryError as e:
@@ -89,8 +87,8 @@ async def create_superadmin_role() -> Role:
         async for session in get_db_session():  # Start a new session
             try:
                 role_repository = RoleRepository(session, Role)
-                role = await role_repository.get_by_name(role_in.name)
+                role = await role_repository.get_by("name", role_in.name)
             except Exception as e:
-                logger.error(f"Fugiu do esperado {e}")
+                logger.error(f"Error on superadmin role creation {e}")
                 raise e
     return role
