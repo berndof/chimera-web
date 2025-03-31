@@ -1,13 +1,12 @@
 import logging
 from typing import Any, Generic, TypeVar
 
+from core.pagination.dependencies import apply_filters
+from fastapi import HTTPException, status
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import asc, desc, func, select
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import NoResultFound
-from fastapi import HTTPException, status
-
-from .pagination.dependencies import apply_filters
+from sqlalchemy.ext.asyncio import AsyncSession
 
 MODEL = TypeVar("MODEL")
 
@@ -47,7 +46,7 @@ class BaseRepository(Generic[MODEL]):
 
     async def get_list(
         self,
-        response_schema: BASE_SCHEMA,
+        response_schema: type[BASE_SCHEMA],
         page: int,
         per_page: int,
         sort_by: str,
@@ -110,7 +109,7 @@ class BaseRepository(Generic[MODEL]):
             items=items,
         )
 
-    async def get_by(self, field: str, value: Any) -> MODEL | None:
+    async def get_by(self, field: str, value: Any) -> MODEL:
         if not hasattr(self.model, field):
             self.logger.error(
                 f"Field '{field}' does not exist in {self.model.__name__}"
@@ -133,20 +132,20 @@ class BaseRepository(Generic[MODEL]):
 
 class BaseService(Generic[MODEL, BASE_REPOSITORY]):
     def __init__(self, repository: BaseRepository[MODEL]):
-        self.logger = logging.getLogger(f"{MODEL.__name__} Service")
+        self.logger = logging.getLogger(f"{self.repository.model.__name__} Service")
         self.repository = repository
 
     async def get_list(
         self,
-        response_schema: BASE_SCHEMA,
+        response_schema: type[BASE_SCHEMA],
         page: int,
         per_page: int,
         sort_by: str,
         order: str,
         filters: BaseFilter[BASE_SCHEMA],
-    ):
+    ) -> PaginatedResponse[BASE_SCHEMA]:
         return await self.repository.get_list(
-            response_schema, page, per_page, sort_by, order, filters
+            response_schema, page, per_page, sort_by, order, filters # type: ignore
         )
 
     async def get_by(self, field: str, value: Any) -> MODEL | None:

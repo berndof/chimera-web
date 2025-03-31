@@ -5,9 +5,9 @@ from fastapi import APIRouter, Depends
 from app.core.pagination import PaginationParams, SortingParams, get_sorting_params
 from app.core.types import PaginatedResponse
 
-from .dependencies import role_service
-from .schemas import RoleBase, RoleFilter, RoleIn
-from .service import RoleService
+from app.core.role.dependencies import role_service
+from app.core.role.schemas import RoleBase, RoleFilter, RoleIn
+from app.core.role.service import RoleService
 
 _logger = logging.getLogger("ROLE ROUTER")
 

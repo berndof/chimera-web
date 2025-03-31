@@ -10,16 +10,16 @@ logger = logging.getLogger("START")
 
 
 def get_defaults():
-    superuser_data: dict[str, str | None] = {
-        "username": os.getenv("SUPERUSER_USERNAME"),
-        "email": os.getenv("SUPERUSER_EMAIL", None),
+    superuser_data: dict[str, str] = {
+        "username": os.getenv("SUPERUSER_USERNAME", ""),
+        "email": os.getenv("SUPERUSER_EMAIL", ""),
         "first_name": os.getenv("SUPERUSER_FIRSTNAME", "Super"),
         "last_name": os.getenv("SUPERUSER_LASTNAME", "User"),
-        "password": os.getenv("SUPERUSER_PASSWORD"),
+        "password": os.getenv("SUPERUSER_PASSWORD", ""),
     }
 
     missing_keys = [
-        key for key, value in superuser_data.items() if value is None and not "email"
+        key for key, value in superuser_data.items() if value == "" and not "email"
     ]
 
     if missing_keys:
@@ -36,7 +36,7 @@ def get_defaults():
 superuser_data, superadmin_role_data = get_defaults()
 
 
-async def start() -> True:
+async def start():
     superuser = await create_superuser()
     superadmin_role = await create_superadmin_role()
     await add_user_to_role(superuser, superadmin_role)

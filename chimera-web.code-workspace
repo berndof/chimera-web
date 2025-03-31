@@ -1,0 +1,73 @@
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "path": "backend",
+            "settings": {
+                "ruff.interpreter": ["${workspaceFolder}/backend/.venv/bin/python"]
+            }
+        },
+        {
+            "path": "frontend",
+            "settings": {
+                "ruff.interpreter": ["${workspaceFolder}/backend/.venv/bin/python"]
+            }
+        }
+    ],
+    "settings": {
+        // 📌 Melhor organização e importação automática
+        "editor.codeActionsOnSave": {
+            "source.organizeImports.ruff": "explicit",
+            "source.unusedImports": "explicit",
+            "source.convertImportFormat": "explicit"
+        },
+
+        // 🚀 Configurações de Análise e Tipagem
+        "python.analysis.autoSearchPaths": false,
+        "python.analysis.useLibraryCodeForTypes": true,
+        "python.analysis.diagnosticMode": "workspace",
+        "python.analysis.autoFormatStrings": true,
+        "python.languageServer": "Default",
+        "python.analysis.typeCheckingMode": "strict",  // 🔥 Agora usando "strict" para melhor verificação
+
+        // 🎯 Definições de severidade para diagnósticos
+        "python.analysis.diagnosticSeverityOverrides": {
+            "reportMissingImports": "error",
+            "reportOptionalMemberAccess": "warning",
+            "reportOptionalSubscript": "warning",
+            "reportGeneralTypeIssues": "warning",
+            "reportUnusedImport": "none"
+        },
+
+        // 🏆 Formatação e Linting com Ruff
+        "[python]": {
+            "editor.defaultFormatter": "charliermarsh.ruff"
+        },
+        "ruff.enable": true,
+        "ruff.exclude": [
+            "**/migrations/**",
+            "**/tests/**",
+            "**/.venv/**",
+            "**/env/**",
+            "**/__pycache__/**",
+            "**/__init__.py"
+        ],
+        "editor.defaultFormatter": "charliermarsh.ruff",
+
+        // ⚙️ Melhorando análise de código
+        "python.analysis.autoIndent": false,
+        "python.analysis.exclude": [
+            "**/migrations/**",
+            "**/tests/**",
+            "**/.venv/**",
+            "**/env/**",
+            "**/__pycache__/**",
+            "**/__init__.py"
+        ],
+
+        // 🔍 Configurando o Mypy para rodar automaticamente
+		"mypy-type-checker.args": ["--strict"],
+    }
+}

@@ -18,9 +18,6 @@
         "python.analysis.diagnosticSeverityOverrides": {
           "reportUnusedImport": "none"
         },
-        "python.analysis.exclude": [
-          "**/__init__.py"
-        ]
       }
     }
   ],
@@ -32,6 +29,17 @@
     },
     "editor.defaultFormatter": "charliermarsh.ruff",
     "python.analysis.autoIndent": false,
-    "python.analysis.autoSearchPaths": false
+    "python.analysis.autoSearchPaths": false,
+    "python.analysis.exclude": [
+      "**/__init__.py"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.mypyEnabled": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit",
+      "source.formatDocument": "explicit",
+      "source.fixAll.ruff": "explicit"
+    },
   }
 }

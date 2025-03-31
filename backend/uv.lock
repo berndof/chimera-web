@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.13"
 
 [[package]]
@@ -64,6 +65,7 @@ dependencies = [
     { name = "dependency-injector" },
     { name = "fastapi", extra = ["standard"] },
     { name = "pyjwt", extra = ["crypto"] },
+    { name = "ruff" },
     { name = "sqlalchemy" },
 ]
 
@@ -82,6 +84,7 @@ requires-dist = [
     { name = "dependency-injector", specifier = ">=4.46.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.115.11" },
     { name = "pyjwt", extras = ["crypto"], specifier = ">=2.10.1" },
+    { name = "ruff", specifier = ">=0.9.10" },
     { name = "sqlalchemy", specifier = ">=2.0.39" },
 ]
 
