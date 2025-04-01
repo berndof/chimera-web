@@ -9,12 +9,15 @@ from app.utils.pagination.schemas import BaseFilter, StringFilterField
 
 class RoleBase(BaseSchema[Role]):
     name: Annotated[
-        str, StringConstraints(min_length=3, max_length=30, pattern=r"^[a-z_]+$")
-    ] = Field(..., example="default_users")
+        str, StringConstraints(min_length=3, max_length=30, pattern=r"^[a-z_]+$"),
+        Field(..., example="default_users")
+    ]
+
     detail: Annotated[
         str | None,
         StringConstraints(min_length=3, max_length=30, pattern=r"^[A-Za-z_]+$"),
-    ] = Field(None, example="notes...")
+        Field(None, example="notes...")
+    ]
 
 
 class RoleFilter(BaseFilter[RoleBase]):

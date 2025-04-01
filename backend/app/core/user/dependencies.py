@@ -11,7 +11,7 @@ from app.database.dependencies import get_db_session
 logger = logging.getLogger("USER_DEPS")
 
 
-async def user_repository(  # noqa: F811
+async def user_repository(
     session: AsyncSession = Depends(get_db_session),
 ) -> UserRepository:
     logger.debug("USER REPO INJECTED")

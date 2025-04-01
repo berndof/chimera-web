@@ -23,7 +23,7 @@ class BaseService(Generic[T]):
 
     async def get_list(
         self,
-        response_schema: type[BaseSchema[V]],
+        response_schema: type[U],
         page: int,
         per_page: int,
         sort_by: str,
@@ -31,19 +31,21 @@ class BaseService(Generic[T]):
         filters: BaseFilter[U],
     ) ->PaginatedResponse[U]:
         try:
-            total, page, per_page, total_pages, _items  = await self.repository.get_list(
+            _total, _page, _per_page, _total_pages, _items  = await self.repository.get_list(
                 page, per_page, sort_by, order, filters
             )
-            
+
             items = [response_schema.model_validate(item) for item in _items] 
+            self.logger.info(f"Fetched {len(items)} items from the database, {items}")
 
             return PaginatedResponse[U](
-                total=total,
-                page=page,
-                per_page=per_page,
-                total_pages=total_pages,
+                total=_total,
+                page=_page,
+                per_page=_per_page,
+                total_pages=_total_pages,
                 items=items,
             )
+
         except NoResultFound:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
@@ -64,3 +66,4 @@ class BaseService(Generic[T]):
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"{self.repository.model.__name__} not found",
             )
+

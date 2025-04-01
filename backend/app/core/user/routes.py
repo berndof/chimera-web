@@ -4,7 +4,6 @@ from fastapi import APIRouter, Depends
 
 from app.core.user.dependencies import user_service
 from app.core.user.schemas import (
-    UserBase,
     UserDetail,
     UserFilter,
     UserIn,
@@ -13,7 +12,6 @@ from app.core.user.schemas import (
 from app.core.user.service import UserService
 from app.utils.pagination.dependencies import get_sorting_params
 from app.utils.pagination.schemas import (
-    PaginatedResponse,
     PaginationParams,
     SortingParams,
 )
@@ -33,7 +31,7 @@ async def user_create(user_in: UserIn, service: UserService = Depends(user_servi
         raise e
 
 
-@router.post("/list", response_model=PaginatedResponse[UserBase])
+@router.post("/list")
 async def user_list(
     service: UserService = Depends(user_service),
     pagination: PaginationParams = Depends(),

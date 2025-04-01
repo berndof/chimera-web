@@ -14,7 +14,7 @@ class PaginatedResponse(BaseModel, Generic[T]):
     page: int
     per_page: int
     total_pages: int
-    items: list[BaseSchema] | None
+    items: list[T] | None
 
 class BaseFilter(BaseModel, Generic[T]):
     """Filtro base que pode ser extendido para cada modelo específico."""

@@ -25,25 +25,3 @@ class UserRepository(BaseRepository[User]):
             if "ix_user_username" in str(ie.orig):
                 raise DuplicateEntryError(User)
             raise ie
-
-    """ async def get_by_username(self, username: str) -> User:
-        stmt = select(self.model).where(self.model.username == username)
-        self.logger.debug(f"Searching user with {stmt}")
-        try:
-            result = await self.db_session.execute(stmt)
-            user = result.scalar_one()
-            return user
-        except Exception as e:
-            self.logger.error(e)
-            raise e
-
-    async def get_by_id(self, id: str) -> User:
-        stmt = select(self.model).where(self.model.id == id)
-        self.logger.debug(f"Searching user with {stmt}")
-        try:
-            result = await self.db_session.execute(stmt)
-            user = result.scalar_one()
-            return user
-        except Exception as e:
-            self.logger.error(e)
-            raise e """

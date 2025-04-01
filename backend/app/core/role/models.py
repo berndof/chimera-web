@@ -8,7 +8,7 @@ from app.database.dependencies import Base
 from app.database.mixins import TimeStampMixin, UUIDMixin
 
 if TYPE_CHECKING:
-    from app.core.user import User
+    from app.core.user.models import User
 
 
 class Role(Base, UUIDMixin, TimeStampMixin):
