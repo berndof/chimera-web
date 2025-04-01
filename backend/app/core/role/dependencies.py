@@ -3,16 +3,15 @@ import logging
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.role.models import Role
+from app.core.role.repository import RoleRepository
+from app.core.role.service import RoleService
 from app.database.dependencies import get_db_session
-
-from .models import Role
-from .repository import RoleRepository
-from .service import RoleService
 
 logger = logging.getLogger("ROLE_DEPS")
 
 
-async def role_repository(  # noqa: F811
+async def role_repository(
     session: AsyncSession = Depends(get_db_session),
 ) -> RoleRepository:
     logger.debug("ROLE REPO INJECTED")

@@ -4,14 +4,13 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy.exc import IntegrityError
 
-from app.core.types import BaseRepository
+from app.core.role.models import Role
+from app.core.role.schemas import RoleIn
 from app.database.exceptions import DuplicateEntryError, RelationAlreadyExistsError
-
-from .models import Role
-from .schemas import RoleIn
+from app.types.repository import BaseRepository
 
 if TYPE_CHECKING:
-    from app.core.user import User
+    from app.core.user.models import User
 
 
 class RoleRepository(BaseRepository[Role]):

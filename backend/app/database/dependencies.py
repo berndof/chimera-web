@@ -1,88 +1,16 @@
-import logging
-from collections.abc import AsyncGenerator, AsyncIterator
-from contextlib import asynccontextmanager
-from os import getenv
-from typing import Any
 
-from sqlalchemy.ext.asyncio import (
-    AsyncConnection,
-    AsyncEngine,
-    AsyncSession,
-    async_sessionmaker,
-    create_async_engine,
-)
+from os import getenv
+from typing import AsyncGenerator
+
+from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
-
-class DbNotInitializedError(Exception):
-    def __init__(self):
-        message = "Database engine is not initialized"
-        super().__init__(message)
-        self.message = message
-
-    def __str__(self):
-        return self.message
-
-
-logger = logging.getLogger("DATABASE MANAGER")
-logger.setLevel(logging.DEBUG)
+from app.database.database_manager import DatabaseManager
 
 
 class Base(DeclarativeBase):
     # https://docs.sqlalchemy.org/en/14/orm/extensions/asyncio.html#preventing-implicit-io-when-using-asyncsession
     __mapper_args__ = {"eager_defaults": True}
-
-
-class DatabaseManager:
-    def __init__(self, host: str, engine_kwargs: dict[str, Any] | None = None):
-        if engine_kwargs is None:
-            engine_kwargs = {}
-
-        self._engine: AsyncEngine | None = create_async_engine(host, **engine_kwargs)
-        self._sessionmaker: async_sessionmaker[AsyncSession] | None = (
-            async_sessionmaker(self._engine, class_=AsyncSession)
-        )
-
-    async def close(self) -> None:
-        if not self._engine:
-            raise DbNotInitializedError
-
-        logger.info("Closing database connection...")
-        await self._engine.dispose()
-        self._engine = None
-        self._sessionmaker = None
-
-    @asynccontextmanager
-    async def connect(self) -> AsyncIterator[AsyncConnection]:
-        if not self._engine:
-            raise DbNotInitializedError
-
-        async with self._engine.begin() as conn:
-            try:
-                yield conn
-            except Exception as e:
-                logger.error(e)
-                await conn.rollback()
-                raise e
-
-    @asynccontextmanager
-    async def session(self) -> AsyncIterator[AsyncSession]:
-        if not self._sessionmaker:
-            raise DbNotInitializedError()
-
-        async with self._sessionmaker(expire_on_commit=False) as session:
-            logger.debug("Opened new DB session")
-            try:
-                yield session
-                await session.commit()
-                logger.debug("Transaction committed successfully")
-            except Exception as e:
-                logger.error("Error during transaction, rolling back...", exc_info=True)
-                await session.rollback()
-                raise e
-            finally:
-                logger.debug("Closing DB session...")
-                await session.close()
 
 
 def get_database_url() -> str:
@@ -107,8 +35,6 @@ def get_database_url() -> str:
 
 
 db_manager = DatabaseManager(get_database_url())
-
-
 async def get_db_session() -> AsyncGenerator[AsyncSession]:
     async with db_manager.session() as session:
         yield session

@@ -1,3 +1,9 @@
+class DbNotInitializedError(Exception):
+    def __init__(self):
+        message = "Database engine is not initialized"
+        super().__init__(message)
+
+
 class DuplicateEntryError(Exception):
     def __init__(self, model: type, message: str | None = None) -> None:
         if message is None:

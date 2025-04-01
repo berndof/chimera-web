@@ -1,12 +1,10 @@
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy.future import select
 
-from app.core.security import get_password_hash
-from app.core.types import BaseRepository
+from app.core.user.models import User
+from app.core.user.schemas import UserIn
 from app.database.exceptions import DuplicateEntryError
-
-from .models import User
-from .schemas import UserIn
+from app.types.repository import BaseRepository
+from app.utils.security import get_password_hash
 
 
 class UserRepository(BaseRepository[User]):
@@ -28,7 +26,7 @@ class UserRepository(BaseRepository[User]):
                 raise DuplicateEntryError(User)
             raise ie
 
-    async def get_by_username(self, username: str) -> User:
+    """ async def get_by_username(self, username: str) -> User:
         stmt = select(self.model).where(self.model.username == username)
         self.logger.debug(f"Searching user with {stmt}")
         try:
@@ -48,4 +46,4 @@ class UserRepository(BaseRepository[User]):
             return user
         except Exception as e:
             self.logger.error(e)
-            raise e
+            raise e """

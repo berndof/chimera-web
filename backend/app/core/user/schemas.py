@@ -4,10 +4,9 @@ from typing import Annotated
 
 from pydantic import EmailStr, Field, StringConstraints
 
-from app.core.pagination.schemas import StringFilterField
-from app.core.types import BaseFilter, BaseSchema
-
-from .models import User
+from app.core.user.models import User
+from app.types.schemas import BaseSchema
+from app.utils.pagination.schemas import BaseFilter, StringFilterField
 
 
 class UserBase(BaseSchema[User]):

@@ -5,19 +5,19 @@ from typing import Any
 import jwt
 from fastapi import Depends, HTTPException, status
 
-from app.core.security import get_secret_key, oauth2_schema, validate_password
-from app.core.types import BaseService
-from app.core.user import User, UserRepository
+from app.core.auth.schemas import TokenData
+from app.core.user.models import User
+from app.core.user.repository import UserRepository
+from app.types.service import BaseService
+from app.utils.security import get_secret_key, oauth2_schema, validate_password
 
-from .schemas import TokenData
 
-
-class AuthService(BaseService[User, UserRepository]):
+class AuthService(BaseService[UserRepository]):
     def __init__(self, user_repository: UserRepository):
         self.user_repository = user_repository
 
     async def authenticate_user(self, username: str, password: str) -> User:
-        user = await self.user_repository.get_by_username(username)
+        user = await self.user_repository.get_by("username", username)
         if not user:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED, detail="User does not exists"
@@ -47,7 +47,7 @@ class AuthService(BaseService[User, UserRepository]):
             payload = jwt.decode(token, secret_key, "HS256")
             user_id = payload.get("sub")
             token_data = TokenData(user_id=user_id)
-            user = await self.user_repository.get_by_id(token_data.user_id)
+            user = await self.user_repository.get_by("id", token_data.user_id)
             return user
 
         except Exception as e:

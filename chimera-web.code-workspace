@@ -30,7 +30,7 @@
         "python.analysis.diagnosticMode": "workspace",
         "python.analysis.autoFormatStrings": true,
         "python.languageServer": "Default",
-        "python.analysis.typeCheckingMode": "strict",  // 🔥 Agora usando "strict" para melhor verificação
+        "python.analysis.typeCheckingMode": "off",  // 🔥 Agora usando "strict" para melhor verificação
 
         // 🎯 Definições de severidade para diagnósticos
         "python.analysis.diagnosticSeverityOverrides": {

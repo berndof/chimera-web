@@ -1,42 +1,40 @@
-# from app.config import module_list
+__all__ = ["app"]
+
 import logging
-from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from importlib import import_module
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from .start import start
-
-
-@asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncIterator[None]:
-    logger.debug("Starting app...")
-    try:
-        await start()
-        yield
-        logger.debug("Shutting down...")
-    except Exception as e:
-        logger.error(f"ad {e}")
-        # sys.exit(0)
-
+from app.config import submodules_path_list
 
 logger = logging.getLogger("MAIN")
 
-modules_list = ["app.core"]
-
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logger.debug("Starting lifespan")
+    try:
+        #await start.create_defaults()
+        yield
+        logger.debug("Ending lifespan")
+    except Exception as e:
+        logger.error(f"Error during lifespan: {e}")
+        raise
 
 def create_app() -> FastAPI:
+    logger.debug("Creating FastAPI app")
     app = FastAPI(
         lifespan=lifespan,
-        title="API",
+        title="Backend API"
     )
 
-    for module_path in modules_list:
-        module = import_module(module_path)
+    #import submodules
+    for submodule_path in submodules_path_list if submodules_path_list else []:
+        module = import_module(submodule_path)
         module.register(app)
 
+    #TODO SET CORS FOR FQDN
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
@@ -47,5 +45,5 @@ def create_app() -> FastAPI:
 
     return app
 
-
 app = create_app()
+    

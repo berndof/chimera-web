@@ -1,14 +1,13 @@
 from fastapi import HTTPException, status
 
-from app.core.types import BaseService
-from app.database.exceptions import DuplicateEntryError
-
 from app.core.user.models import User
 from app.core.user.repository import UserRepository
 from app.core.user.schemas import UserIn
+from app.database.exceptions import DuplicateEntryError
+from app.types.service import BaseService
 
 
-class UserService(BaseService[User, UserRepository]):
+class UserService(BaseService[UserRepository]):
     async def create(self, user_in: UserIn) -> User:
         try:
             new_user = await self.repository.create(user_in)
@@ -24,17 +23,3 @@ class UserService(BaseService[User, UserRepository]):
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Erro interno no servidor. {e}",
             )
-
-
-"""     async def get_list(
-        self,
-        response_schema: BaseSchema[User],
-        page: int,
-        per_page: int,
-        sort_by: str,
-        order: str,
-        filters: UserFilter,
-    ):
-        return await self.repository.get_list(
-            response_schema, page, per_page, sort_by, order, filters
-        ) """

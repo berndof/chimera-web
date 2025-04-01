@@ -1,14 +1,13 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm
 
-from app.core.user import User, UserDetail
-
-from .dependencies import auth_service, get_session_user
-from .schemas import Token
-from .service import AuthService
+from app.core.auth.dependencies import auth_service, get_session_user
+from app.core.auth.schemas import Token
+from app.core.auth.service import AuthService
+from app.core.user.models import User
+from app.core.user.schemas import UserDetail
 
 router = APIRouter(prefix="/auth", tags=["auth"])
-
 
 @router.post("/token", response_model=Token)
 async def get_access_token(

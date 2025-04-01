@@ -2,10 +2,9 @@ from typing import Annotated
 
 from pydantic import Field, StringConstraints
 
-from app.core.pagination.schemas import StringFilterField
-from app.core.types import BaseFilter, BaseSchema
-
-from .models import Role
+from app.core.role.models import Role
+from app.types.schemas import BaseSchema
+from app.utils.pagination.schemas import BaseFilter, StringFilterField
 
 
 class RoleBase(BaseSchema[Role]):
@@ -20,6 +19,5 @@ class RoleBase(BaseSchema[Role]):
 
 class RoleFilter(BaseFilter[RoleBase]):
     name: StringFilterField | None = None
-
 
 class RoleIn(RoleBase): ...

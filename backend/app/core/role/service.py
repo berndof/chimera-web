@@ -1,11 +1,11 @@
-from app.core.types import BaseSchema, BaseService
+from app.core.role.models import Role
+from app.core.role.repository import RoleRepository
+from app.core.role.schemas import RoleFilter, RoleIn
+from app.types.schemas import BaseSchema
+from app.types.service import BaseService
 
-from .models import Role
-from .repository import RoleRepository
-from .schemas import RoleFilter, RoleIn
 
-
-class RoleService(BaseService[Role, RoleRepository]):
+class RoleService(BaseService[RoleRepository]):
     async def create(self, role_in: RoleIn) -> Role:
         # add user to default role
         return await self.repository.create(role_in)

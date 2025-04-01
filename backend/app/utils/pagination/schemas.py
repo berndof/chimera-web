@@ -1,5 +1,24 @@
+
+from typing import Generic, TypeVar
+
+from app.types.schemas import BaseSchema
 from pydantic import BaseModel, Field
 
+T = TypeVar("T", bound="BaseSchema")
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    """
+    A generic paginated response model.
+    """
+    total: int
+    page: int
+    per_page: int
+    total_pages: int
+    items: list[BaseSchema] | None
+
+class BaseFilter(BaseModel, Generic[T]):
+    """Filtro base que pode ser extendido para cada modelo específico."""
+    pass
 
 class PaginationParams(BaseModel):
     page: int = Field(1, ge=1, description="Número da página")

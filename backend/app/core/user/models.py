@@ -1,14 +1,16 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.dependencies import Base
 from app.database.mixins import TimeStampMixin, UUIDMixin
-from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from app.core.role import Role
+    from app.core.role.models import Role
+
 
 user_roles = Table(
     "user_roles",

@@ -2,12 +2,21 @@ import logging
 
 from fastapi import APIRouter, Depends
 
-from app.core.pagination import PaginationParams, SortingParams, get_sorting_params
-from app.core.types import PaginatedResponse
-
-from .dependencies import user_service
-from .schemas import UserBase, UserDetail, UserFilter, UserIn, UserPublic
-from .service import UserService
+from app.core.user.dependencies import user_service
+from app.core.user.schemas import (
+    UserBase,
+    UserDetail,
+    UserFilter,
+    UserIn,
+    UserPublic,
+)
+from app.core.user.service import UserService
+from app.utils.pagination.dependencies import get_sorting_params
+from app.utils.pagination.schemas import (
+    PaginatedResponse,
+    PaginationParams,
+    SortingParams,
+)
 
 _logger = logging.getLogger("USER ROUTER")
 

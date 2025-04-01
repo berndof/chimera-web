@@ -1,3 +1,5 @@
+#TODO temporario, log level = DEBUG
+
 import logging
 
 logging.basicConfig(

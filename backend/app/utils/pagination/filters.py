@@ -1,3 +1,4 @@
+
 from collections.abc import Callable
 from typing import Any
 
@@ -41,7 +42,6 @@ class Operators:
     def lt(column: InstrumentedAttribute[Any], value: Any) -> BinaryExpression[Any]:
         """Menor que."""
         return column < value
-
 
 # Mapeamento de operadores com tipagem corrigida
 OPERATORS: dict[

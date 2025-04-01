@@ -2,10 +2,9 @@ import logging
 
 from fastapi import Depends
 
-from app.core.security import oauth2_schema
+from app.core.auth.service import AuthService
 from app.core.user.dependencies import UserRepository, user_repository
-
-from .service import AuthService
+from app.utils.security import oauth2_schema
 
 logger = logging.getLogger("USER_DEPS")
 
