@@ -1,25 +1,20 @@
-from typing import Any, TypeVar
+from typing import TypeVar
 
 from fastapi import Query
-from sqlalchemy import BinaryExpression, and_
-from sqlalchemy.sql.selectable import Select
 
 from app.database.dependencies import Base
-from app.utils.pagination.filters import OPERATORS
 from app.utils.pagination.schemas import SortingParams
 
 T = TypeVar("T", bound="Base")
 
 
-def apply_filters(
+""" def apply_filters(
     query: Select[Any], model: type[Base], filters: dict[str, dict[str, Any]]
 ) -> Select[Any]:
-    """
     Aplica os filtros recebidos na query.
-    """
     conditions: list[BinaryExpression[Any]] = []
 
-    for field, rule in filters.items():
+    for field, rule in filters.items():+
         operator_name = rule.get("operator", "eq")  # operador padrão
         value = rule.get("value")
         operator_func = OPERATORS.get(operator_name)
@@ -28,7 +23,7 @@ def apply_filters(
             conditions.append(operator_func(column, value))
     if conditions:
         query = query.where(and_(*conditions))
-    return query
+    return query """
 
 def get_sorting_params(allowed_fields: list[str]):
     """

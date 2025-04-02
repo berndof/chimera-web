@@ -59,7 +59,10 @@ class DatabaseManager:
                 await session.commit()
                 self.logger.debug("Transaction committed successfully")
             except Exception as e:
-                self.logger.error("Error during transaction, rolling back...", exc_info=True)
+                self.logger.error(
+                    "Error during transaction, rolling back...",
+                    exc_info=True
+                )
                 await session.rollback()
                 raise e
             finally:

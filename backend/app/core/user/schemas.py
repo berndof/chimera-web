@@ -4,8 +4,8 @@ from typing import Annotated
 
 from pydantic import EmailStr, Field, StringConstraints
 
+from app.abs.schemas import BaseSchema
 from app.core.user.models import User
-from app.types.schemas import BaseSchema
 from app.utils.pagination.schemas import BaseFilter, StringFilterField
 
 
@@ -43,6 +43,7 @@ class UserPublic(UserBase): ...
 
 
 class UserIn(UserBase):
+    detail: Annotated[str, StringConstraints(max_length=255)] | None = None
     password: Annotated[str, StringConstraints(min_length=8)]
 
 

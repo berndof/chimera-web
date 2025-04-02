@@ -6,9 +6,8 @@ from sqlalchemy import asc, desc, func, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.abs.schemas import BaseSchema
 from app.database.dependencies import SQLBaseModel
-from app.types.schemas import BaseSchema
-from app.utils.pagination.dependencies import apply_filters
 from app.utils.pagination.schemas import BaseFilter
 
 T = TypeVar("T", bound="SQLBaseModel")
@@ -46,8 +45,8 @@ class BaseRepository(Generic[T]):
         # Se houver filtros (usando model_dump para Pydantic v2; em v1 use .dict())
         filter_dict = filters.model_dump(exclude_unset=True, exclude_none=True)
         if filter_dict:
-            query = apply_filters(query, self.model, filters=filter_dict)
-            count_query = apply_filters(count_query, self.model, filters=filter_dict)
+            query = self.model.apply_filters(query, filter_dict)
+            count_query = self.model.apply_filters(count_query, filter_dict)
 
         total_results = await self.db_session.execute(count_query)
         total = total_results.scalar_one()

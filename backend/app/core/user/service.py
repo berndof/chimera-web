@@ -1,10 +1,10 @@
 from fastapi import HTTPException, status
 
+from app.abs.service import BaseService
 from app.core.user.models import User
 from app.core.user.repository import UserRepository
 from app.core.user.schemas import UserIn
 from app.database.exceptions import DuplicateEntryError
-from app.types.service import BaseService
 
 
 class UserService(BaseService[UserRepository]):

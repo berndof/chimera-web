@@ -1,9 +1,9 @@
 from sqlalchemy.exc import IntegrityError
 
+from app.abs.repository import BaseRepository
 from app.core.user.models import User
 from app.core.user.schemas import UserIn
 from app.database.exceptions import DuplicateEntryError
-from app.types.repository import BaseRepository
 from app.utils.security import get_password_hash
 
 

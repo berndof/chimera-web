@@ -2,8 +2,8 @@ from typing import Annotated
 
 from pydantic import Field, StringConstraints
 
+from app.abs.schemas import BaseSchema
 from app.core.role.models import Role
-from app.types.schemas import BaseSchema
 from app.utils.pagination.schemas import BaseFilter, StringFilterField
 
 

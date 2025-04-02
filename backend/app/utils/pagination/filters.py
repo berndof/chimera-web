@@ -1,4 +1,4 @@
-
+""" 
 from collections.abc import Callable
 from typing import Any
 
@@ -7,40 +7,40 @@ from sqlalchemy.sql.elements import BinaryExpression
 
 
 class Operators:
-    """Classe que encapsula operadores para filtros SQLAlchemy."""
+    Classe que encapsula operadores para filtros SQLAlchemy.
 
     @staticmethod
     def eq(column: InstrumentedAttribute[Any], value: Any) -> BinaryExpression[Any]:
-        """Igualdade."""
+        Igualdade.
         return column == value
 
     @staticmethod
     def neq(column: InstrumentedAttribute[Any], value: Any) -> BinaryExpression[Any]:
-        """Diferente."""
+        Diferente.
         return column != value
 
     @staticmethod
     def contains(
         column: InstrumentedAttribute[Any], value: str
     ) -> BinaryExpression[Any]:
-        """Contém (case insensitive)."""
+        Contém (case insensitive).
         return column.ilike(f"%{value}%")
 
     @staticmethod
     def not_contains(
         column: InstrumentedAttribute[Any], value: str
     ) -> BinaryExpression[Any]:
-        """Não contém (case insensitive)."""
+        Não contém (case insensitive).
         return ~column.ilike(f"%{value}%")
 
     @staticmethod
     def gt(column: InstrumentedAttribute[Any], value: Any) -> BinaryExpression[Any]:
-        """Maior que."""
+        Maior que.
         return column > value
 
     @staticmethod
     def lt(column: InstrumentedAttribute[Any], value: Any) -> BinaryExpression[Any]:
-        """Menor que."""
+        Menor que.
         return column < value
 
 # Mapeamento de operadores com tipagem corrigida
@@ -54,3 +54,4 @@ OPERATORS: dict[
     "gt": Operators.gt,
     "lt": Operators.lt,
 }
+"""

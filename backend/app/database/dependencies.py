@@ -6,14 +6,19 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
 from app.database.database_manager import DatabaseManager
-from app.database.mixins import SoftDeleteMixin, TimeStampMixin, UUIDMixin
+from app.database.mixins import (
+    FilterableMixin,
+    SoftDeleteMixin,
+    TimeStampMixin,
+    UUIDMixin,
+)
 
 
 class Base(DeclarativeBase):
     # https://docs.sqlalchemy.org/en/14/orm/extensions/asyncio.html#preventing-implicit-io-when-using-asyncsession
     __mapper_args__ = {"eager_defaults": True}
 
-class SQLBaseModel(Base, UUIDMixin, TimeStampMixin, SoftDeleteMixin):
+class SQLBaseModel(Base, UUIDMixin, TimeStampMixin, SoftDeleteMixin, FilterableMixin):
     """
     Base model for SQLAlchemy ORM.
     """

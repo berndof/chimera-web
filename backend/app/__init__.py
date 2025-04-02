@@ -1,4 +1,4 @@
-#TODO temporario, log level = DEBUG
+#HACK: temporario, log level = DEBUG
 
 import logging
 

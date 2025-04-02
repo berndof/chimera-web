@@ -17,6 +17,7 @@ async def lifespan(app: FastAPI):
     logger.debug("Starting lifespan")
     try:
         await start()
+        #await generate_fake_users(num_users=10)
         yield
         logger.debug("Ending lifespan")
     except Exception as e:

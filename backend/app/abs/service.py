@@ -4,9 +4,9 @@ from typing import Any, Generic, TypeVar
 from fastapi import HTTPException, status
 from sqlalchemy.exc import NoResultFound
 
+from app.abs.repository import BaseRepository
+from app.abs.schemas import BaseSchema
 from app.database.dependencies import Base
-from app.types.repository import BaseRepository
-from app.types.schemas import BaseSchema
 from app.utils.pagination.schemas import BaseFilter, PaginatedResponse
 
 T = TypeVar("T", bound="BaseRepository")

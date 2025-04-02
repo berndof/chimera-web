@@ -1,8 +1,9 @@
 
 from typing import Generic, TypeVar
 
-from app.types.schemas import BaseSchema
 from pydantic import BaseModel, Field
+
+from app.abs.schemas import BaseSchema
 
 T = TypeVar("T", bound="BaseSchema")
 

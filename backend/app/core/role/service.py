@@ -1,7 +1,7 @@
+from app.abs.service import BaseService
 from app.core.role.models import Role
 from app.core.role.repository import RoleRepository
 from app.core.role.schemas import RoleIn
-from app.types.service import BaseService
 
 
 class RoleService(BaseService[RoleRepository]):

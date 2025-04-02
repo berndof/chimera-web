@@ -5,10 +5,10 @@ from typing import Any
 import jwt
 from fastapi import Depends, HTTPException, status
 
+from app.abs.service import BaseService
 from app.core.auth.schemas import TokenData
 from app.core.user.models import User
 from app.core.user.repository import UserRepository
-from app.types.service import BaseService
 from app.utils.security import get_secret_key, oauth2_schema, validate_password
 
 
