@@ -1,16 +1,17 @@
 import logging
-from typing import Any, Generic, Sequence, TypeVar
+from collections.abc import Sequence
+from typing import Any, Generic, TypeVar
 
 from sqlalchemy import asc, desc, func, select
 from sqlalchemy.exc import NoResultFound
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.dependencies import Base
+from app.database.dependencies import SQLBaseModel
 from app.types.schemas import BaseSchema
 from app.utils.pagination.dependencies import apply_filters
 from app.utils.pagination.schemas import BaseFilter
 
-T = TypeVar("T", bound="Base")
+T = TypeVar("T", bound="SQLBaseModel")
 S = TypeVar("S", bound="BaseSchema")
 
 class BaseRepository(Generic[T]):
@@ -67,16 +68,10 @@ class BaseRepository(Generic[T]):
             query = query.offset(offset).limit(per_page)
             result = await self.db_session.execute(query)
             items = result.scalars().all()
-            
             self.logger.debug(f"Results = {items}")
-            
             return total, page, per_page, total_pages, items
-        else: 
+        else:
             raise NoResultFound()
-
-            
-
-        return total, page, per_page, total_pages, items
 
     async def get_by(self, field: str, value: Any) -> T:
         if not hasattr(self.model, field):
@@ -97,3 +92,11 @@ class BaseRepository(Generic[T]):
             raise nrf
         except Exception as e:
             raise e
+
+    async def soft_delete(self, obj: T) -> None:
+        """
+        Realiza o soft delete do objeto.
+        """
+        obj.soft_delete()
+        self.logger.debug(f"Soft deleted {obj}")
+        await self.save(obj)

@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import submodules_path_list
+from app.start import start
 
 logger = logging.getLogger("MAIN")
 
@@ -15,7 +16,7 @@ logger = logging.getLogger("MAIN")
 async def lifespan(app: FastAPI):
     logger.debug("Starting lifespan")
     try:
-        #await start.create_defaults()
+        await start()
         yield
         logger.debug("Ending lifespan")
     except Exception as e:

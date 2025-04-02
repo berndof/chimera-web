@@ -4,14 +4,13 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database.dependencies import Base
-from app.database.mixins import TimeStampMixin, UUIDMixin
+from app.database.dependencies import SQLBaseModel
 
 if TYPE_CHECKING:
     from app.core.user.models import User
 
 
-class Role(Base, UUIDMixin, TimeStampMixin):
+class Role(SQLBaseModel):
     __tablename__: str = "role"
 
     name: Mapped[str] = mapped_column(unique=True, nullable=False, index=True)

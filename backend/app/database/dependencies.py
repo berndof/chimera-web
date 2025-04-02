@@ -1,17 +1,25 @@
 
+from collections.abc import AsyncGenerator
 from os import getenv
-from typing import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import DeclarativeBase
 
 from app.database.database_manager import DatabaseManager
+from app.database.mixins import SoftDeleteMixin, TimeStampMixin, UUIDMixin
 
 
 class Base(DeclarativeBase):
     # https://docs.sqlalchemy.org/en/14/orm/extensions/asyncio.html#preventing-implicit-io-when-using-asyncsession
     __mapper_args__ = {"eager_defaults": True}
 
+class SQLBaseModel(Base, UUIDMixin, TimeStampMixin, SoftDeleteMixin):
+    """
+    Base model for SQLAlchemy ORM.
+    """
+    __abstract__ = True
+
+    # Define any common columns or methods here if needed
 
 def get_database_url() -> str:
     db_data: dict[str, str] = {

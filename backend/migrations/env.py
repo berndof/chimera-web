@@ -8,11 +8,11 @@ from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
-from app.database.dependencies import Base, get_database_url
-from app.main import modules_list
+from app.database.dependencies import Base, get_database_url # type: ignore
+from app.config import submodules_path_list # type: ignore
 
-""" for module_path in modules_list:
-    module = import_module(module_path) """
+for module_path in submodules_path_list:
+    module = import_module(module_path)
 
 
 # this is the Alembic Config object, which provides

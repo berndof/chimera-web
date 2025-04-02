@@ -4,7 +4,7 @@ services:
       - .:/backend:delegated
       - /backend/.venv  # Protege a venv do container
       - /backend/scripts
-      - ./alembic/versions:/backend/alembic/versions:rw
+      - ./migrations/versions:/backend/migrations/versions:rw
 
     develop:
       watch:

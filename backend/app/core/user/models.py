@@ -5,8 +5,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy import Column, ForeignKey, Table
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-from app.database.dependencies import Base
-from app.database.mixins import TimeStampMixin, UUIDMixin
+from app.database.dependencies import Base, SQLBaseModel
 
 if TYPE_CHECKING:
     from app.core.role.models import Role
@@ -24,7 +23,7 @@ user_roles = Table(
 )
 
 
-class User(Base, UUIDMixin, TimeStampMixin):
+class User(SQLBaseModel):
     __tablename__: str = "user"
 
     username: Mapped[str] = mapped_column(unique=True, nullable=False, index=True)
