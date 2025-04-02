@@ -31,10 +31,11 @@ class BaseService(Generic[T]):
         filters: BaseFilter[U],
     ) ->PaginatedResponse[U]:
         try:
-            _total, _page, _per_page, _total_pages, _items  = await self.repository.get_list(
-                page, per_page, sort_by, order, filters
+            _total, _page, _per_page, _total_pages, _items = (
+                await self.repository.get_list(
+                    page, per_page, sort_by, order, filters
+                )
             )
-
             items = [response_schema.model_validate(item) for item in _items] 
             self.logger.info(f"Fetched {len(items)} items from the database, {items}")
 

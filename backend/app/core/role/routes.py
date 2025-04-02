@@ -7,6 +7,7 @@ from app.core.role.schemas import RoleBase, RoleFilter, RoleIn
 from app.core.role.service import RoleService
 from app.utils.pagination.dependencies import get_sorting_params
 from app.utils.pagination.schemas import (
+    PaginatedResponse,
     PaginationParams,
     SortingParams,
 )
@@ -26,7 +27,7 @@ async def user_create(role_in: RoleIn, service: RoleService = Depends(role_servi
         raise e
 
 
-@router.post("/list")
+@router.post("/list", response_model=PaginatedResponse[RoleBase])
 async def user_list(
     service: RoleService = Depends(role_service),
     pagination: PaginationParams = Depends(),

@@ -12,7 +12,7 @@ from app.utils.pagination.schemas import BaseFilter, StringFilterField
 class UserBase(BaseSchema[User]):
     username: Annotated[
         str,
-        StringConstraints(min_length=3, max_length=30, pattern=r"^[a-z_]+$"),
+        StringConstraints(min_length=3, max_length=30, pattern=r"^[a-zA-Z0-9_]+$"),
         Field(..., example="john_doe"),
     ]
 

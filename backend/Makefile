@@ -1,5 +1,6 @@
 dev:
 	@echo "Running docker in dev mode"
+	@docker volume rm backend_database
 	@docker compose up -d --build
 
 up:
@@ -8,6 +9,10 @@ up:
 down:
 	@echo "Stopping docker compose"
 	@docker compose down
+
+clean_db:
+	@echo "Cleaning Database please run 'make migrate' again"
+	@docker volume rm backend_database backend_pgadmin
 
 migration:
 	@bash -c 'read -p "nome da migração: " MIGRATION_NAME; docker exec api alembic revision --autogenerate -m "$$MIGRATION_NAME"'
@@ -21,7 +26,5 @@ api_logs:
 database_logs:
 	@docker logs -f database
 
-clean_database:
-	@docker volume rm database 
 
-.PHONY: migration, migrate, clean, down, up, dev, api_logs, clean_database, database_logs
+.PHONY: migration, migrate, down, up, dev, api_logs, database_logs, clean_db

@@ -9,6 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import submodules_path_list
 from app.start import start
+from app.tests.create_test_users import generate_fake_users
 
 logger = logging.getLogger("MAIN")
 
@@ -17,7 +18,7 @@ async def lifespan(app: FastAPI):
     logger.debug("Starting lifespan")
     try:
         await start()
-        #await generate_fake_users(num_users=10)
+        await generate_fake_users(num_users=10)
         yield
         logger.debug("Ending lifespan")
     except Exception as e:
@@ -48,4 +49,3 @@ def create_app() -> FastAPI:
     return app
 
 app = create_app()
-    

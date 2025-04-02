@@ -1,7 +1,7 @@
 from collections.abc import Callable
-from operator import and_
 from typing import Any
 
+from sqlalchemy import and_
 from sqlalchemy.orm.attributes import InstrumentedAttribute
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.elements import BinaryExpression
@@ -64,26 +64,27 @@ class FilterableMixin:
     """
     @classmethod
     def apply_filters(
-        cls, query: Select, filters: dict[str, dict[str, Any]]
+        cls,
+        query: Select,
+        filters: dict[str, dict[str, Any]],
+        show_soft_deleted:bool = False
     ) -> Select:
         conditions: list[BinaryExpression] = []
 
         # Se a classe possuir o mixin de soft delete,
         # adiciona o filtro para registros ativos
-        if hasattr(cls, "deleted_at"):
+        if hasattr(cls, "deleted_at") and show_soft_deleted:
             conditions.append(cls.deleted_at.is_(None))
 
         for field, rule in filters.items():
-            # Verifica se o campo existe no modelo e se o valor foi definido
-            if hasattr(cls, field):
-                value = rule.get("value")
-                if value is not None:
-                    operator_name = rule.get("operator", "eq")
-                    operator_func = OPERATORS.get(operator_name)
-                    if operator_func:
-                        column = getattr(cls, field)
-                        conditions.append(operator_func(column, value))
-
+            operator_name = rule.get("operator", "eq")  # operador padrão
+            value = rule.get("value")
+            operator_func = OPERATORS.get(operator_name)
+            if operator_func and hasattr(cls, field):
+                column = getattr(cls, field)
+                conditions.append(operator_func(column, value))
         if conditions:
             query = query.where(and_(*conditions))
         return query
+
+
