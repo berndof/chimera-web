@@ -1,11 +1,12 @@
 from typing import Any, TypeVar
 
-from app.database.dependencies import Base
-from app.utils.pagination.filters import OPERATORS
-from app.utils.pagination.schemas import SortingParams
 from fastapi import Query
 from sqlalchemy import BinaryExpression, and_
 from sqlalchemy.sql.selectable import Select
+
+from app.database.dependencies import Base
+from app.utils.pagination.filters import OPERATORS
+from app.utils.pagination.schemas import SortingParams
 
 T = TypeVar("T", bound="Base")
 
